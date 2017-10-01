@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Nav } from "../../components/Nav";
 
-class Main extends Component {
+class League extends Component {
   state = {
     articles: [],
   };
@@ -10,10 +10,11 @@ class Main extends Component {
   render() {
     return (
       <div>
-          <Nav/>
+          <Nav/> 
+          <h2>League Home</h2>  
       </div>
     );
   }
 }
 
-export default Main;
+export default League;

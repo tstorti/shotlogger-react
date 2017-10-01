@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
+import { Nav } from "../../components/Nav";
 
 class Dashboard extends Component {
   state = {
@@ -11,6 +12,8 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
+        <Nav />
+        <h2>Dashboard</h2>
       </div>
     );
   }

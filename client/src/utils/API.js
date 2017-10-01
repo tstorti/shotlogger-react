@@ -13,8 +13,7 @@ export default {
   saveShotlog: function(shotlogData) {
     return axios.post("/api/shotlogs", shotlogData);
   },
-
-  // Gets all players
+  // Gets all leagues
   getLeagues: function() {
     return axios.get("/api/leagues/");
   },
@@ -23,22 +22,21 @@ export default {
     return axios.delete("/api/leagues/" + id);
   },
   // Saves a league to the database
-  saveLeague: function(shotlogData) {
-    return axios.post("/api/leagues", shotlogData);
+  saveLeague: function() {
+    return axios.post("/api/leagues");
   },
-
   // Gets all players
-  getPlayers: function() {
-    return axios.get("/api/players");
+  getPlayers: function(id) {
+    return axios.get("/api/leagues" + id);
   },
-  // Deletes the league with the given id
-  deletePlayer: function(id) {
-    return axios.delete("/api/players/" + id);
-  },
-  // Saves a league to the database
-  savePlayer: function(shotlogData) {
-    return axios.post("/api/players", shotlogData);
-  },
+  // // Deletes the league with the given id
+  // deletePlayer: function(id) {
+  //   return axios.delete("/api/players/" + id);
+  // },
+  // // Saves a league to the database
+  // savePlayer: function(shotlogData) {
+  //   return axios.post("/api/players", shotlogData);
+  // },
 
 
 };
