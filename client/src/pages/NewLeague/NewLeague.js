@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import API from "../../utils/API";
 import Input from "../../components/Input";
-import "./Home.css";
+import "./NewLeague.css";
 
-class Home extends Component {
+class NewLeague extends Component {
   state = {
     articles: [],
     leagueID: "",
     password: "",
-    redirect1: false,
-    redirect2: false,
+    passwordConfirm: "",
+    redirect: false,
   };
 
   handleInputChange = event => {
@@ -19,26 +19,25 @@ class Home extends Component {
       [name]: value
     });
   };
-  leagueLogin = () => {
+
+  leagueNew = () => {
     console.log(this.state.leagueID);
     console.log(this.state.password);
+    console.log(this.state.passwordConfirm);
+    // API.saveLeague(this.state.leagueID)
+        //   .then(res => this.setState({ recipes: res.data }))
+        //   .catch(err => console.log(err));
+
     //if valid league login, set redirect to true so the redirect goes to the league page
-    this.setState({ redirect1: true });
-  };
-  leagueNew = () => {
-    //set redirect to true so the redirect goes to the new league page
-    this.setState({ redirect2: true });
+    this.setState({ redirect: true });
+    
   };
 
   render() {
-    const { redirect1 } = this.state;
-    const { redirect2 } = this.state;
+    const { redirect } = this.state;
     
-    if (redirect1) {
+    if (redirect) {
       return <Redirect to='/league'/>;
-    }
-    if (redirect2) {
-      return <Redirect to='/league/new' />
     }
     return (
       <div>
@@ -60,7 +59,14 @@ class Home extends Component {
                 placeholder="Password"
               />
             </div>
-            <button  onClick={this.leagueLogin} className="btn-login">Login</button>
+            <div className="input-container">
+              <Input
+                name="passwordConfirm"
+                value={this.state.passwordConfirm}
+                onChange={this.handleInputChange}
+                placeholder="Confirm Password"
+              />
+            </div>
             <button  onClick={this.leagueNew} className="btn-new">Create New</button>
           </div>
       </div>
@@ -68,4 +74,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default NewLeague;
