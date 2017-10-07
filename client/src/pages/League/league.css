@@ -1,0 +1,16 @@
+.d-f{
+    display:flex;
+}
+.f-1{
+    flex: 1;
+}
+.btn-active{
+    background-color: green;
+    padding: 10px;
+    border-radius: 5px;
+}
+.btn-inactive{
+    background-color: red;
+    padding: 10px;
+    border-radius: 5px;
+}

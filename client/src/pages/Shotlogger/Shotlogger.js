@@ -7,7 +7,6 @@ import "./shotlogger.css"
 class Shotlogger extends Component {
   state = {
     shots:[],
-
     lastShot:{
       "shooter":"",
       "x":"",
@@ -42,9 +41,8 @@ class Shotlogger extends Component {
 
     if(this.state.outcomeToggle ==="missed"){
       ctx.fillStyle = "#ff2626"; // Red color	
-      this.state.lastShot.made=0;
-      this.state.lastShot.attempts=1;
-      this.state.shots.push({
+      let arrayVar = this.state.shots;
+      arrayVar.push({
         "x":x,
         "y":y,
         "shooter":"",
@@ -54,21 +52,26 @@ class Shotlogger extends Component {
         //"z":-2,
         //"attempts":1,
       });
+      this.setState({
+        shots: arrayVar
+      })
     }
     else{
       ctx.fillStyle = "#0000FF"; // Blue color	
-      this.state.lastShot.made=0;
-      this.state.lastShot.attempts=1;
-      this.state.shots.push({
+      let arrayVar = this.state.shots;
+      arrayVar.push({
         "x":x,
         "y":y,
         "shooter":"",
         "made":1,
         //default z value
         //this is the number of std deviations away from mean at this location
-        //"z":2,
+        //"z":-2,
         //"attempts":1,
       });
+      this.setState({
+        shots: arrayVar
+      })
     }
     
     ctx.beginPath(); //Start path
@@ -84,16 +87,15 @@ class Shotlogger extends Component {
     return (
       <div>
         <Nav/>
-        <h2>Shotlogger</h2>
-        <div>
+        <div className="court-container">
           <div >
             <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
           </div>
           <div>
-            <input  type="radio" name="outcome" value="made"
+            <input  type="radio" name="outcome" value="made" checked={this.state.outcomeToggle === 'made'}
                 onChange={this.handleInputChange}></input>
             <label>Made</label>
-            <input type="radio" name="outcome" value="missed"
+            <input type="radio" name="outcome" value="missed" checked={this.state.outcomeToggle === 'missed'}
                 onChange={this.handleInputChange}></input>
             <label>Missed</label>
           </div>

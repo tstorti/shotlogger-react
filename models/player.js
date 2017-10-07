@@ -14,6 +14,10 @@ var PlayerSchema = new Schema({
         type: String,
         required: true
     },
+    image:{
+        type: String,
+        required: false
+    },
     position:{
         type: String,
         required: true

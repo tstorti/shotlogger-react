@@ -1,6 +1,9 @@
 .court{
     background:url("./court.svg")
 }
+.court-container{
+    text-align:center;
+}
 
 .last{
     margin:25px;

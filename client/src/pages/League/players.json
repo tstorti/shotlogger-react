@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Jon",
+    "height": "5'11",
+    "image": "",
+    "position": "PF"
+  },
+  {
+    "id": 2,
+    "name": "Paul",
+    "height": "6'0",
+    "image": "",
+    "position": "PF"
+  },
+  {
+    "id": 3,
+    "name": "Zach",
+    "height": "6'0",
+    "image": "",
+    "position": "PG"
+  },
+  {
+    "id": 4,
+    "name": "Anan",
+    "height": "5'9",
+    "image": "",
+    "position": "PG"
+  },
+  {
+    "id": 5,
+    "name": "Sam",
+    "height": "6'4",
+    "image": "",
+    "position": "PF"
+  },
+  {
+    "id": 6,
+    "name": "Geoff",
+    "height": "6'6",
+    "image": "",
+    "position": "C"
+  }
+]
