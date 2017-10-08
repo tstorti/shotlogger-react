@@ -7,7 +7,8 @@ import "./Home.css";
 class Home extends Component {
   state = {
     articles: [],
-    leagueID: "",
+    errorMessage:"",
+    leagueLogin: "",
     password: "",
     passwordConfirm: "",
     redirect: false,
@@ -22,10 +23,23 @@ class Home extends Component {
     });
   };
   leagueLogin = () => {
-    console.log(this.state.leagueID);
+    console.log(this.state.leagueLogin);
     console.log(this.state.password);
-    //if valid league login, set redirect to true so the redirect goes to the league page
-    this.setState({ redirect: true });
+    
+    API.getLeague(this.state.leagueLogin)
+        .then(res => {
+          //if valid league login, set redirect to true so the redirect goes to the league page
+          if(res.data[0].login === this.state.leagueLogin && res.data[0].password === this.state.password){
+            this.setState({ 
+              redirect: true,
+              errorMessage: "", 
+            });
+          }
+          else{
+            this.setState({ errorMessage: "Invalid credentials, please try again" });
+          }
+        })
+        .catch(err => console.log(err));
   };
   leagueNew = () => {
     //set redirect to true so the redirect goes to the new league page
@@ -36,13 +50,13 @@ class Home extends Component {
   };
 
   leagueNewSubmit = () => {
-    console.log(this.state.leagueID);
+    console.log(this.state.leagueLogin);
     console.log(this.state.password);
     console.log(this.state.passwordConfirm);
     
     API.saveLeague(
       {
-        login:this.state.leagueID,
+        login:this.state.leagueLogin,
         password:this.state.password,
       })
         .then(res => {
@@ -57,7 +71,7 @@ class Home extends Component {
     const { redirect } = this.state;
     
     if (redirect) {
-      return <Redirect to={"/league/" + this.state.leagueID}/>;
+      return <Redirect to={"/league/" + this.state.leagueLogin}/>;
     }
  
     return (
@@ -68,8 +82,8 @@ class Home extends Component {
               <div className="login-container">
                 <div className="input-container">
                   <Input
-                    name="leagueID"
-                    value={this.state.leagueID}
+                    name="leagueLogin"
+                    value={this.state.leagueLogin}
                     onChange={this.handleInputChange}
                     placeholder="League ID"
                   />
@@ -84,15 +98,16 @@ class Home extends Component {
                 </div>
                 <button  onClick={this.leagueLogin} className="btn-login">Login</button>
                 <button  onClick={this.leagueNew} className="btn-new">Create New</button>  
-              </div>  
+                <div>{this.state.errorMessage}</div> 
+              </div> 
             }
             {/* Conditionally render different form if creating new League */}
             {this.state.showNewForm &&
               <div className="login-container">
                 <div className="input-container">
                   <Input
-                    name="leagueID"
-                    value={this.state.leagueID}
+                    name="leagueLogin"
+                    value={this.state.leagueLogin}
                     onChange={this.handleInputChange}
                     placeholder="League ID"
                   />

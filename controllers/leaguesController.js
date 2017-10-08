@@ -18,13 +18,24 @@ module.exports = {
   //     .catch(err => res.status(422).json(err));
   //     console.log(req.body);
   // },
-  // remove: function(req, res) {
-  //   db.Shotlog
-  //     .findById({ _id: req.params.id })
-  //     .then(dbModel => dbModel.remove())
-  //     .then(dbModel => res.json(dbModel))
-  //     .catch(err => res.status(422).json(err));
-  // }
+
+
+  //get all players for league with populate
+  findAll: function(req, res) {
+    db.League
+      .find({"login":req.params.id})
+      .populate("players")
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+
+  get: function(req, res) {
+    console.log(req.params.id);
+    db.League
+      .find({"login":req.params.id})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
 
   create: function(req, res) {
     db.League
@@ -34,3 +45,18 @@ module.exports = {
       console.log(req.body);
   },
 };
+
+// User.find({})
+// // ..and on top of that, populate the notes (replace the objectIds in the notes array with bona-fide notes)
+// .populate("notes")
+// // Now, execute the query
+// .exec(function(error, doc) {
+//   // Send any errors to the browser
+//   if (error) {
+//     res.send(error);
+//   }
+//   // Or send the doc to the browser
+//   else {
+//     res.send(doc);
+//   }
+// });

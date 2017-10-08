@@ -3,14 +3,12 @@ const leaguesController = require("../../controllers/leaguesController");
 
 // Matches with "/api/leagues"
 router.route("/")
-  // .get(shotlogsController.findAll)
+  .get(leaguesController.findAll)
   .post(leaguesController.create);
 
   
-
-// Matches with "/api/shotlogs/:id"
-router
-  // .route("/:id")
-  // .delete(shotlogsController.remove);
+// Matches with "/api/leagues/:id"
+router.route("/:id")
+   .get(leaguesController.get);
 
 module.exports = router;

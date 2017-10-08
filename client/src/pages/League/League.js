@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router';
+import API from "../../utils/API";
 import { Nav } from "../../components/Nav";
 import PlayerCard from "../../components/PlayerCard";
 import Input from "../../components/Input";
@@ -46,14 +47,25 @@ class League extends Component {
   };
 
   saveNewPlayer = () => {
-    //do api call, reset state
-    console.log(this.state.newName);
-    console.log(this.state.newHeight);
-    console.log(this.state.newPosition);
-    console.log(this.state.newImage);
-    this.setState({
-      showNewPlayerForm: false,
-    });
+    //do api call, reset state to hide form
+
+    //TODO - still need to add reference to league ID for populate request
+    API.savePlayer(
+      {
+        name:this.state.newName,
+        height:this.state.newHeight,
+        position:this.state.newPosition,
+        image:this.state.newImage,
+      })
+        .then(res => {
+          //this.setState({ redirect: true })
+          //redirect to league page for specific id?
+          console.log(res);
+          this.setState({
+            showNewPlayerForm: false,
+          });
+        })
+        .catch(err => console.log(err));
   };
 
   selectPlayer = id => {
@@ -192,7 +204,7 @@ class League extends Component {
                 />
               </div>
               <div>
-                <button onClick={() => this.saveNewPlayer()}>Save New Player</button>
+                <button onClick={this.saveNewPlayer}>Save New Player</button>
               </div>
             </div>
           } 

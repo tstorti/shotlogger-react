@@ -1,12 +1,11 @@
 const router = require("express").Router();
-const shotlogsController = require("../../controllers/playersController");
+const playersController = require("../../controllers/playersController");
 
-// Matches with "/api/shotlogs"
+// Matches with "/api/players"
 router.route("/")
-  // .get(shotlogsController.findAll)
-  // .post(shotlogsController.create);
+  .post(playersController.create);
 
-// Matches with "/api/shotlogs/:id"
+// Matches with "/api/players/:id"
 router
   // .route("/:id")
   // .delete(shotlogsController.remove);
