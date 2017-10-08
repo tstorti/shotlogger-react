@@ -3,8 +3,8 @@ import API from "../../utils/API";
 import { Nav } from "../../components/Nav";
 import data from "./data.js";
 import * as d3 from "d3";
-import * as d3_hexbin from "d3-hexbin";
-import * as d3_chart from "d3.chart";
+import "d3-hexbin";
+import "d3.chart";
 import BasketballShotChart from "../../chart/d3.basketball-shot-chart";
 import "./dashboard.css";
 

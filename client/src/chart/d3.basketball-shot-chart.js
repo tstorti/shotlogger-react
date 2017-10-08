@@ -1,15 +1,4 @@
-/**
- * Create and configure NBA shot charts for offense and defense.
- *
- * Requires:
- *   - d3
- *   - d3.chart
- *   - d3.chart.defaults
- */
-
 import * as d3 from "d3";
-import * as d3_hexbin from "d3-hexbin";
-import * as d3_chart from "d3.chart";
 
 const BasketballShotChart = function () {
 

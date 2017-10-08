@@ -1,10 +1,10 @@
 const router = require("express").Router();
-const shotlogsController = require("../../controllers/shotlogsController");
+const leaguesController = require("../../controllers/leaguesController");
 
-// Matches with "/api/shotlogs"
+// Matches with "/api/leagues"
 router.route("/")
   // .get(shotlogsController.findAll)
-  // .post(shotlogsController.create);
+  .post(leaguesController.create);
 
 // Matches with "/api/shotlogs/:id"
 router

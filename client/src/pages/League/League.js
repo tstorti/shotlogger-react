@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Nav } from "../../components/Nav";
 import PlayerCard from "../../components/PlayerCard";
+import Input from "../../components/Input";
 import "./league.css";
 
 //placeholder data
@@ -11,6 +12,12 @@ class League extends Component {
     allPlayers: players,
     articles: [],
     availablePlayers: players,
+    newName:"",
+    newHeight:"",
+    newImage:"",
+    newPosition:"",
+
+    showNewPlayerForm:false,
     team1:[],
     team2:[],
     currentTeam: "team1",
@@ -18,12 +25,38 @@ class League extends Component {
     team2BtnClass: "btn-inactive"
   };
 
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  newPlayerDialog = () => {
+    this.setState({
+      showNewPlayerForm: true,
+    });
+  };
+
+  saveNewPlayer = () => {
+    //do api call, reset state
+    console.log(this.state.newName);
+    console.log(this.state.newHeight);
+    console.log(this.state.newPosition);
+    console.log(this.state.newImage);
+    this.setState({
+      showNewPlayerForm: false,
+    });
+  };
+
   selectPlayer = id => {
     //add selected player list of players for selected team
  
     //grab index of the selected player based on id property
-    let index = this.state.allPlayers.findIndex(p => p.id == id)
+    let index = this.state.allPlayers.findIndex(p => p.id === id)
     let current = this.state.currentTeam;
+    
+    //define temporary teamArray to replace state
     let newTeam;
     if(current === "team1"){
       newTeam = this.state.team1;
@@ -31,7 +64,7 @@ class League extends Component {
     else{
       newTeam = this.state.team2;
     }
-    
+    //define temporary newPlayer object
     let newPlayer = {
       id: this.state.allPlayers[index].id,
       name: this.state.allPlayers[index].name,
@@ -41,6 +74,7 @@ class League extends Component {
     }
     newTeam.push(newPlayer);
 
+    //add to appropriate array in the state
     if(current === "team1"){
       this.setState({
         team1: newTeam
@@ -82,10 +116,51 @@ class League extends Component {
 
   
   render() {
+
     return (
       <div>
         <Nav/> 
         <h2>League Home</h2>
+        {/* Player Creation */}
+        <div>
+          <button onClick={() => this.newPlayerDialog()}>Add New Player</button>
+        </div>
+        <div className="modalOuter">
+          {this.state.showNewPlayerForm &&
+            <div className="newPlayerModal"> 
+              <div className="modalContent">
+                <Input
+                  name="newName"
+                  value={this.state.newName}
+                  onChange={this.handleInputChange}
+                  placeholder="Name"
+                />
+                <Input
+                  name="newPosition"
+                  value={this.state.newPosition}
+                  onChange={this.handleInputChange}
+                  placeholder="Position"
+                />
+                <Input
+                  name="newHeight"
+                  value={this.state.newHeight}
+                  onChange={this.handleInputChange}
+                  placeholder="Height"
+                />
+                <Input
+                  name="newImage"
+                  value={this.state.newImage}
+                  onChange={this.handleInputChange}
+                  placeholder="Image Link"
+                />
+              </div>
+              <div>
+                <button onClick={() => this.saveNewPlayer()}>Save New Player</button>
+              </div>
+            </div>
+          } 
+        </div>
+        {/* Player Selection */}
         <div>
           <div className="d-f">
             <div>Player Pool</div>

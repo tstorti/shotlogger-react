@@ -14,3 +14,21 @@
     padding: 10px;
     border-radius: 5px;
 }
+.modalContent{
+    margin-top:20%;
+}
+.modalOuter{
+    position:relative;
+    width: 40%;
+    margin: 20px auto;
+}
+.newPlayerModal{
+    position:absolute;
+    top:30%;
+    text-align:center;
+    background-color:white;
+    border: 1px solid black;
+    width:400px;
+    height: 400px;
+    z-index: 100;
+}

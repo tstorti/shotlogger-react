@@ -6,6 +6,7 @@ export const Nav = props =>(
     <div className="header-primary">StreeBallStats</div>
     <div className="nav-container">
       <a className="nav-link" href="./">Logout</a>
+      <a className="nav-link" href="./league">League Home</a>
       <a className="nav-link" href="/shotlogger">Shotlogger</a>
       <a className="nav-link" href="/dashboard">Dashboard</a>
     </div>

@@ -1,6 +1,6 @@
 const db = require("../models");
 
-// Defining methods for the leagueController
+// Defining methods for the articlesController
 module.exports = {
 
 
@@ -26,5 +26,11 @@ module.exports = {
   //     .catch(err => res.status(422).json(err));
   // }
 
-
+  create: function(req, res) {
+    db.League
+      .create(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+      console.log(req.body);
+  },
 };

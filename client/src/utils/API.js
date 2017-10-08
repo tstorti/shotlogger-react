@@ -22,8 +22,8 @@ export default {
     return axios.delete("/api/leagues/" + id);
   },
   // Saves a league to the database
-  saveLeague: function() {
-    return axios.post("/api/leagues");
+  saveLeague: function(leagueData) {
+    return axios.post("/api/leagues", leagueData);
   },
   // Gets all players
   getPlayers: function(id) {

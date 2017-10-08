@@ -6,12 +6,12 @@ var Schema = mongoose.Schema;
 // Create article schema
 var LeagueSchema = new Schema({
 // title is a required string
-    name: {
+    login: {
         type: String,
         required: true
     },
-    home:{
-        type: Date,
+    password:{
+        type: String,
         required: true
     },
     // this saves player ids

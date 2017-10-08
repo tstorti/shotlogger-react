@@ -1,9 +1,11 @@
 const router = require("express").Router();
-const articleRoutes = require("./shotlogs");
+const leagueRoutes = require("./leagues");
+const playerRoutes = require("./players");
+const shotlogRoutes = require("./shotlogs");
 
 // Article routes
-router.use("/shotlogs", articleRoutes);
-router.use("/players", articleRoutes);
-router.use("/leagues", articleRoutes);
+router.use("/shotlogs", shotlogRoutes);
+router.use("/players", playerRoutes);
+router.use("/leagues", leagueRoutes);
 
 module.exports = router;
