@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router';
 import { Nav } from "../../components/Nav";
 import PlayerCard from "../../components/PlayerCard";
 import Input from "../../components/Input";
@@ -22,7 +23,13 @@ class League extends Component {
     team2:[],
     currentTeam: "team1",
     team1BtnClass: "btn-active",
-    team2BtnClass: "btn-inactive"
+    team2BtnClass: "btn-inactive",
+
+    redirectHome: false,
+    redirectDashboard: false,
+    redirectShotlogger:false,
+
+
   };
 
   handleInputChange = event => {
@@ -114,12 +121,42 @@ class League extends Component {
     }
   };
 
+  redirect = target =>{
+    if(target === "dashboard"){
+      this.setState({
+        redirectDashboard:true,
+      });
+    }
+    if(target === "logout"){
+      this.setState({
+        redirectHome:true,
+      });
+    }
+    if(target === "shotlogger"){
+      this.setState({
+        redirectShotlogger:true,
+      });
+    }
+  };
+
   
   render() {
 
+    if (this.state.redirectDashboard) {
+      return <Redirect to={"/dashboard/" + this.props.match.params.id}/>;
+    }
+    if (this.state.redirectHome) {
+      return <Redirect to={"/"}/>;
+    }
+    if (this.state.redirectShotlogger) {
+      return <Redirect to={"/shotlogger/" + this.props.match.params.id}/>;
+    }
+
     return (
       <div>
-        <Nav/> 
+        <Nav
+          redirect={this.redirect}
+        /> 
         <h2>League Home</h2>
         {/* Player Creation */}
         <div>

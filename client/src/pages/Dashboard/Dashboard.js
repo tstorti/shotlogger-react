@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router';
 import API from "../../utils/API";
 import { Nav } from "../../components/Nav";
 import data from "./data.js";
@@ -28,6 +29,10 @@ class Dashboard extends Component {
       },
     ],
     gameData:[],
+
+    redirectHome: false,
+    redirectLeague:false,
+    redirectShotlogger:false,
   };
 
   componentDidMount() {
@@ -71,11 +76,41 @@ class Dashboard extends Component {
     });
     this.playerShotDistr(this.state.gameData);
   };
+  
+  redirect = target =>{
+    if(target === "league"){
+      this.setState({
+        redirectLeague:true,
+      });
+    }
+    if(target === "logout"){
+      this.setState({
+        redirectHome:true,
+      });
+    }
+    if(target === "shotlogger"){
+      this.setState({
+        redirectShotlogger:true,
+      });
+    }
+  };
 
   render() {
+    if (this.state.redirectLeague) {
+      return <Redirect to={"/league/" + this.props.match.params.id}/>;
+    }
+    if (this.state.redirectHome) {
+      return <Redirect to={"/"}/>;
+    }
+    if (this.state.redirectShotlogger) {
+      return <Redirect to={"/shotlogger/" + this.props.match.params.id}/>;
+    }
+
     return (
       <div>
-        <Nav />
+        <Nav 
+          redirect={this.redirect}
+        />
         <h2 className="test">Dashboard</h2>
         <div id="chart1"></div>
       </div>

@@ -57,7 +57,7 @@ class Home extends Component {
     const { redirect } = this.state;
     
     if (redirect) {
-      return <Redirect to='/league'/>;
+      return <Redirect to={"/league/" + this.state.leagueID}/>;
     }
  
     return (

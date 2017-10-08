@@ -5,10 +5,10 @@ export const Nav = props =>(
   <div>
     <div className="header-primary">StreeBallStats</div>
     <div className="nav-container">
-      <a className="nav-link" href="./">Logout</a>
-      <a className="nav-link" href="./league">League Home</a>
-      <a className="nav-link" href="/shotlogger">Shotlogger</a>
-      <a className="nav-link" href="/dashboard">Dashboard</a>
+      <button className="btn-nav" onClick={() => props.redirect("logout")}>Logout</button>
+      <button className="btn-nav" onClick={() => props.redirect("league")}>League Home</button>
+      <button className="btn-nav" onClick={() => props.redirect("shotlogger")}>Shotlogger</button>
+      <button className="btn-nav" onClick={() => props.redirect("dashboard")}>Dashboard</button>
     </div>
   </div>
 );

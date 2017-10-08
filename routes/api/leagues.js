@@ -6,6 +6,8 @@ router.route("/")
   // .get(shotlogsController.findAll)
   .post(leaguesController.create);
 
+  
+
 // Matches with "/api/shotlogs/:id"
 router
   // .route("/:id")

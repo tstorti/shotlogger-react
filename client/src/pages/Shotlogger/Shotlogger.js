@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import { Nav } from "../../components/Nav";
+import { Redirect } from 'react-router';
 import "./shotlogger.css"
 
 
@@ -13,6 +14,10 @@ class Shotlogger extends Component {
       "y":"",
     },
     outcomeToggle:"made",
+
+    redirectHome: false,
+    redirectLeague:false,
+    redirectDashboard: false,
   };
 
   handleInputChange = event => {
@@ -83,10 +88,41 @@ class Shotlogger extends Component {
     
   };
 
+  redirect = target =>{
+    if(target === "dashboard"){
+      this.setState({
+        redirectDashboard:true,
+      });
+    }
+    if(target === "league"){
+      this.setState({
+        redirectLeague:true,
+      });
+    }
+    if(target === "logout"){
+      this.setState({
+        redirectHome:true,
+      });
+    }
+  };
+
   render() {
+
+    if (this.state.redirectDashboard) {
+      return <Redirect to={"/dashboard/" + this.props.match.params.id}/>;
+    }
+    if (this.state.redirectLeague) {
+      return <Redirect to={"/league/" + this.props.match.params.id}/>;
+    }
+    if (this.state.redirectHome) {
+      return <Redirect to={"/"}/>;
+    }
+    
     return (
       <div>
-        <Nav/>
+        <Nav
+          redirect={this.redirect}
+        />
         <div className="court-container">
           <div >
             <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
