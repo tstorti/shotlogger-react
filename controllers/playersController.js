@@ -6,15 +6,20 @@ module.exports = {
   create: function(req, res) {
     db.Player
       .create(req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      // .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        console.log(req.body.leagueID);
+        db.League.findOneAndUpdate({"_id":req.body.leagueID}, { $push: { "players": dbModel._id } }, { new: true }, function(err, newdoc) {
+          if (err) {
+            res.json(err);
+          }
+          else {
+            res.json(newdoc);
+          }
+        });
+      })
+    .catch(err => res.status(422).json(err));
+
   },
-  // remove: function(req, res) {
-  //   db.Shotlog
-  //     .findById({ _id: req.params.id })
-  //     .then(dbModel => dbModel.remove())
-  //     .then(dbModel => res.json(dbModel))
-  //     .catch(err => res.status(422).json(err));
-  // }
 
 };

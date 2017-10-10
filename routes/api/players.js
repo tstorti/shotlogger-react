@@ -6,8 +6,6 @@ router.route("/")
   .post(playersController.create);
 
 // Matches with "/api/players/:id"
-router
-  // .route("/:id")
-  // .delete(shotlogsController.remove);
+router.route("/:id")
 
 module.exports = router;

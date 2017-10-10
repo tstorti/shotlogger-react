@@ -14,6 +14,7 @@ class League extends Component {
     allPlayers: players,
     articles: [],
     availablePlayers: players,
+    leagueID:"",
     newName:"",
     newHeight:"",
     newImage:"",
@@ -33,6 +34,18 @@ class League extends Component {
 
   };
 
+  componentDidMount(){
+    API.getPlayers(this.props.match.params.id)
+    .then(res => {
+      //if valid league login, set redirect to true so the redirect goes to the league page
+      console.log(res);
+      this.setState({
+        leagueID:res.data[0]._id,
+      })
+    })
+    .catch(err => console.log(err));
+  };
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -48,7 +61,7 @@ class League extends Component {
 
   saveNewPlayer = () => {
     //do api call, reset state to hide form
-
+    console.log(this.state.leagueID);
     //TODO - still need to add reference to league ID for populate request
     API.savePlayer(
       {
@@ -56,6 +69,7 @@ class League extends Component {
         height:this.state.newHeight,
         position:this.state.newPosition,
         image:this.state.newImage,
+        leagueID: this.state.leagueID,
       })
         .then(res => {
           //this.setState({ redirect: true })

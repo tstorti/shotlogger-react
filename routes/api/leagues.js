@@ -5,10 +5,9 @@ const leaguesController = require("../../controllers/leaguesController");
 router.route("/")
   .get(leaguesController.findAll)
   .post(leaguesController.create);
-
   
 // Matches with "/api/leagues/:id"
 router.route("/:id")
-   .get(leaguesController.get);
+   .get(leaguesController.getPlayers);
 
 module.exports = router;

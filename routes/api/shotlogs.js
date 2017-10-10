@@ -3,12 +3,9 @@ const shotlogsController = require("../../controllers/shotlogsController");
 
 // Matches with "/api/shotlogs"
 router.route("/")
-  // .get(shotlogsController.findAll)
-  // .post(shotlogsController.create);
 
 // Matches with "/api/shotlogs/:id"
-router
-  // .route("/:id")
-  // .delete(shotlogsController.remove);
+router.route("/:id")
+
 
 module.exports = router;
