@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import API from "../../utils/API";
-import { Nav } from "../../components/Nav";
 import data from "./data.js";
 import * as d3 from "d3";
 import "d3-hexbin";
@@ -31,6 +30,8 @@ class Dashboard extends Component {
     ],
     gameData:[],
 
+    selectedPlayer:"",
+
     redirectHome: false,
     redirectLeague:false,
     redirectShotlogger:false,
@@ -44,6 +45,11 @@ class Dashboard extends Component {
       allPlayers: this.props.location.state.allPlayers,
     });
   };
+
+  handleInputChange = event =>{
+    this.setState({selectedPlayer: event.target.value});
+    console.log(event.target.value);
+  }
 
   playerShotDistr = (data) => {
     //clear previous heat chart
@@ -114,10 +120,21 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <Nav 
-          redirect={this.redirect}
-        />
+        <div>
+          <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
+          <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
+        </div>
         <h2 className="test">Dashboard</h2>
+        <div>
+            <div>Select a Player</div>
+            <div>
+              <select onChange={this.handleInputChange} value={this.state.selectedPlayer}>
+                {this.state.allPlayers.map(player => (
+                  <option key={player._id} value={player._id}>{player.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         <div id="chart1"></div>
       </div>
     );

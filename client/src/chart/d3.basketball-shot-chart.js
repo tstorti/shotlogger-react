@@ -9,8 +9,7 @@ const BasketballShotChart = function () {
     initialize: function () {
       this.calculateVisibleCourtLength();
 
-      var base = this.base
-        .attr('class', 'shot-chart');
+      //var base = this.base.attr('class', 'shot-chart');
 
       // draw base court
       this.drawCourt();
@@ -153,7 +152,7 @@ const BasketballShotChart = function () {
           visibleCourtLength = this._visibleCourtLength,
           heatScale = this._heatScale,
           hexagonRadiusSizes = this._hexagonRadiusSizes,
-          hexagonFillValue = this._hexagonFillValue,
+          //hexagonFillValue = this._hexagonFillValue,
           keyWidth = this._keyWidth,
           threePointSideRadius = this._threePointSideRadius, 
           basketProtrusionLength = this._basketProtrusionLength;
@@ -354,20 +353,20 @@ const BasketballShotChart = function () {
   //                                         d3.chart.defaults
 
   // underscore debounce method
-  var debounce = function (func, wait, immediate) {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  };
+  // var debounce = function (func, wait, immediate) {
+  //   var timeout;
+  //   return function() {
+  //     var context = this, args = arguments;
+  //     var later = function() {
+  //       timeout = null;
+  //       if (!immediate) func.apply(context, args);
+  //     };
+  //     var callNow = immediate && !timeout;
+  //     clearTimeout(timeout);
+  //     timeout = setTimeout(later, wait);
+  //     if (callNow) func.apply(context, args);
+  //   };
+  // };
 
   // initialize defaults in chart prototype
   var initDefaults = function (chartProto, defaults) {
@@ -490,7 +489,7 @@ const BasketballShotChart = function () {
               pj2 = pj + (py < pj ? -1 : 1),
               px2 = px - pi2,
               py2 = py - pj2;
-          if (px1 * px1 + py1 * py1 > px2 * px2 + py2 * py2) pi = pi2 + (pj & 1 ? 1 : -1) / 2, pj = pj2;
+          if (px1 * px1 + py1 * py1 > px2 * px2 + py2 * py2) pi = pi2 + (pj & 1 ? 1 : -1) / 2; pj = pj2;
         }
   
         var id = pi + "-" + pj, bin = binsById[id];
@@ -514,7 +513,7 @@ const BasketballShotChart = function () {
             y1 = -Math.cos(angle) * radius,
             dx = x1 - x0,
             dy = y1 - y0;
-        x0 = x1, y0 = y1;
+        x0 = x1; y0 = y1;
         return [dx, dy];
       });
     }
@@ -562,7 +561,7 @@ const BasketballShotChart = function () {
   
     hexbin.size = function(_) {
       if (!arguments.length) return [width, height];
-      width = +_[0], height = +_[1];
+      width = +_[0]; height = +_[1];
       return hexbin;
     };
   

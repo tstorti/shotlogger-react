@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import API from "../../utils/API";
-import { Nav } from "../../components/Nav";
 import PlayerCard from "../../components/PlayerCard";
 import Input from "../../components/Input";
 import "./league.css";
@@ -19,6 +18,9 @@ class League extends Component {
     newHeight:"",
     newImage:"",
     newPosition:"",
+
+    gameName:"",
+    seasonName:"Winter 2017/18",
 
     showNewPlayerForm:false,
     team1:[],
@@ -48,10 +50,14 @@ class League extends Component {
       [name]: value
     });
   };
+  handleInputChange2 = event =>{
+    this.setState({seasonName: event.target.value});
+    console.log(event.target.value);
+  }
 
   newPlayerDialog = () => {
     this.setState({
-      showNewPlayerForm: true,
+      showNewPlayerForm: !this.state.showNewPlayerForm,
     });
   };
 
@@ -116,8 +122,7 @@ class League extends Component {
       });
     }
     //remove player from list of available players
-    let newAvailable = this.state.availablePlayers;
-    newAvailable = newAvailable.splice(index, 1);
+    this.state.availablePlayers.splice(index, 1);
     console.log(this.state.availablePlayers);
     
   };
@@ -167,14 +172,16 @@ class League extends Component {
       return <Redirect to={"/"}/>;
     }
     if (this.state.redirectShotlogger) {
-      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ team1:this.state.team1, team2:this.state.team2, allPlayers:this.state.allPlayers }}} />;
+      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ team1:this.state.team1, team2:this.state.team2, gameName:this.state.gameName, season:this.state.seasonName, allPlayers:this.state.allPlayers }}} />;
     }
 
     return (
       <div>
-        <Nav
-          redirect={this.redirect}
-        /> 
+        <div>
+          <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
+          <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Shotlogger</button>
+          <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
+        </div>  
         <h2>League Home</h2>
         {/* Player Creation */}
         <div>
@@ -211,9 +218,34 @@ class League extends Component {
               </div>
               <div>
                 <button onClick={this.saveNewPlayer}>Save New Player</button>
+                <button onClick={() => this.newPlayerDialog()}>Close</button>
               </div>
             </div>
           } 
+        </div>
+
+        {/* Season and Game Settings */}
+        <div>
+          <div>
+            <div>Current Season</div>
+            <div>
+              <select onChange={this.handleInputChange2} value={this.state.seasonName}>
+                <option value="Summer 2017">Summer 2017</option>
+                <option value="Fall 2017">Fall 2017</option>
+                <option value="Winter 2017/18">Winter 2017/2018</option>
+                <option value="Spring 2018">Spring 2018</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div>Set GameName</div>
+            <Input
+                name="gameName"
+                value={this.state.gameName}
+                onChange={this.handleInputChange}
+                placeholder="Enter a name for the game"
+              />
+          </div>
         </div>
         {/* Player Selection */}
         <div>

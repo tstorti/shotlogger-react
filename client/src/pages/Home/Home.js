@@ -38,7 +38,7 @@ class Home extends Component {
               players:res.data[0].players,
               leagueID:res.data[0]._id,
             });
-            console.log(res);
+            //console.log(res);
           }
           else{
             this.setState({ errorMessage: "Invalid credentials, please try again" });

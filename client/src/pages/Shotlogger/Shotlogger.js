@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
-import { Nav } from "../../components/Nav";
 import { Redirect } from 'react-router';
 import "./shotlogger.css"
 
@@ -34,14 +33,14 @@ class Shotlogger extends Component {
   };
 
   handleInputChange1 = event => {
-    const { outcomeToggle, value } = event.target;
+    const { value } = event.target;
     this.setState({
       outcomeToggle: value,
     });
     console.log(value);
   };
   handleInputChange2 = event => {
-    const { outcomeToggle, value } = event.target;
+    const { value } = event.target;
     this.setState({
       shooter: value,
     });
@@ -162,9 +161,11 @@ class Shotlogger extends Component {
     
     return (
       <div>
-        <Nav
-          redirect={this.redirect}
-        />
+        <div>
+          <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
+          <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
+          <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
+        </div>
         <div>
           <div>Team1</div>
             {this.state.team1.map(player => (
