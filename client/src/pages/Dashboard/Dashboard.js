@@ -15,6 +15,7 @@ var sample = require("./data.js");
 class Dashboard extends Component {
   
   state = {
+    allPlayers:[],
     data:sample,
     loggerData: [
       {
@@ -38,6 +39,10 @@ class Dashboard extends Component {
   componentDidMount() {
     BasketballShotChart();
     this.translateData();
+    console.log(this.props.location.state);
+    this.setState({
+      allPlayers: this.props.location.state.allPlayers,
+    });
   };
 
   playerShotDistr = (data) => {
@@ -96,15 +101,16 @@ class Dashboard extends Component {
   };
 
   render() {
+    if (this.state.redirectShotlogger) {
+      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
+    }
     if (this.state.redirectLeague) {
-      return <Redirect to={"/league/" + this.props.match.params.id}/>;
+      return <Redirect to={{pathname:"/league/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
     }
     if (this.state.redirectHome) {
       return <Redirect to={"/"}/>;
     }
-    if (this.state.redirectShotlogger) {
-      return <Redirect to={"/shotlogger/" + this.props.match.params.id}/>;
-    }
+    
 
     return (
       <div>

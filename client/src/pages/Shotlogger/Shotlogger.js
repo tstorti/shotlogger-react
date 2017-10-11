@@ -7,25 +7,45 @@ import "./shotlogger.css"
 
 class Shotlogger extends Component {
   state = {
+    allPlayers:[],
+    team1:[],
+    team2:[],
     shots:[],
     lastShot:{
       "shooter":"",
       "x":"",
       "y":"",
+      "made":""
     },
+    shooter:"",
     outcomeToggle:"made",
 
     redirectHome: false,
     redirectLeague:false,
     redirectDashboard: false,
   };
+  componentDidMount(){
+    console.log(this.props.location.state);
+    this.setState({
+      allPlayers: this.props.location.state.allPlayers,
+      team1: this.props.location.state.team1,
+      team2: this.props.location.state.team2,
+    });
+  };
 
-  handleInputChange = event => {
+  handleInputChange1 = event => {
     const { outcomeToggle, value } = event.target;
     this.setState({
-      outcomeToggle: value
+      outcomeToggle: value,
     });
-
+    console.log(value);
+  };
+  handleInputChange2 = event => {
+    const { outcomeToggle, value } = event.target;
+    this.setState({
+      shooter: value,
+    });
+    console.log(value);
   };
 
   getPosition = event => {
@@ -42,15 +62,18 @@ class Shotlogger extends Component {
     var pointSize = 8; // Change according to the size of the point.
     var ctx = document.getElementById("canvas").getContext("2d");
 
-    this.setState({lastShot: {x: x, y: y}});
+    
 
     if(this.state.outcomeToggle ==="missed"){
+      let obj = {x: x, y: y, shooter:this.state.shooter, made:0};
+      this.setState({lastShot: obj});
+      
       ctx.fillStyle = "#ff2626"; // Red color	
       let arrayVar = this.state.shots;
       arrayVar.push({
         "x":x,
         "y":y,
-        "shooter":"",
+        "shooter":this.state.shooter,
         "made":0,
         //default z value
         //this is the number of std deviations away from mean at this location
@@ -62,12 +85,14 @@ class Shotlogger extends Component {
       })
     }
     else{
+      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:1}});
+
       ctx.fillStyle = "#0000FF"; // Blue color	
       let arrayVar = this.state.shots;
       arrayVar.push({
         "x":x,
         "y":y,
-        "shooter":"",
+        "shooter":this.state.shooter,
         "made":1,
         //default z value
         //this is the number of std deviations away from mean at this location
@@ -83,9 +108,26 @@ class Shotlogger extends Component {
     ctx.arc(x, y, pointSize, 0, Math.PI * 2, true); // Draw a circle point using the arc function of the canvas with a point structure.
     ctx.fill(); // Close the path and fill.
 
-    // this.lastX = x;
-    // this.lastY = y;
-    
+     //save shot to the database
+     this.saveShot();
+  };
+
+  saveShot = () => {
+    API.saveShot(this.state.lastShot.shooter, 
+      {
+        shooter:this.state.lastShot.shooter,
+        made:this.state.lastShot.made,
+        x:this.state.lastShot.x,
+        y:this.state.lastShot.y,
+        game:this.state.game,
+        season:this.state.season,
+        date: Date.now(),
+      })
+        .then(res => {
+          //console.log
+          console.log(res);
+        })
+        .catch(err => console.log(err));
   };
 
   redirect = target =>{
@@ -109,10 +151,10 @@ class Shotlogger extends Component {
   render() {
 
     if (this.state.redirectDashboard) {
-      return <Redirect to={"/dashboard/" + this.props.match.params.id}/>;
+      return <Redirect to={{pathname:"/dashboard/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
     }
     if (this.state.redirectLeague) {
-      return <Redirect to={"/league/" + this.props.match.params.id}/>;
+      return <Redirect to={{pathname:"/league/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
     }
     if (this.state.redirectHome) {
       return <Redirect to={"/"}/>;
@@ -123,16 +165,34 @@ class Shotlogger extends Component {
         <Nav
           redirect={this.redirect}
         />
+        <div>
+          <div>Team1</div>
+            {this.state.team1.map(player => (
+              <div key={player.id}>
+                <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
+                <label htmlFor="id">{player.name}</label>
+              </div>
+            ))}
+        </div>
+        <div>
+          <div>Team2</div>
+            {this.state.team2.map(player => (
+              <div key={player.id}>
+                <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
+                <label htmlFor="id">{player.name}</label>
+              </div>
+            ))}
+        </div>
         <div className="court-container">
           <div >
             <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
           </div>
           <div>
             <input  type="radio" name="outcome" value="made" checked={this.state.outcomeToggle === 'made'}
-                onChange={this.handleInputChange}></input>
+                onChange={this.handleInputChange1}></input>
             <label>Made</label>
             <input type="radio" name="outcome" value="missed" checked={this.state.outcomeToggle === 'missed'}
-                onChange={this.handleInputChange}></input>
+                onChange={this.handleInputChange1}></input>
             <label>Missed</label>
           </div>
           <div>  

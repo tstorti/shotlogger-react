@@ -7,5 +7,6 @@ router.route("/")
 
 // Matches with "/api/players/:id"
 router.route("/:id")
+.post(playersController.saveShot);
 
 module.exports = router;

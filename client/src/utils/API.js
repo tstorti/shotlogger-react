@@ -1,6 +1,11 @@
 import axios from "axios";
 
 export default {
+  // Gets league data for login
+  getLeague: function(login) { 
+    console.log("getting league data");
+    return axios.get("/api/leagues/"+login);
+  },
   // Saves a league to the database
   saveLeague: function(leagueData) {
     return axios.post("/api/leagues", leagueData);
@@ -10,10 +15,14 @@ export default {
     console.log("saving player");
     return axios.post("/api/players", playerData);
   },
-  // Gets all players for current league
-  getPlayers: function(leagueName) {
-    return axios.get("/api/leagues/" + leagueName);
+  //Save new Shot
+  saveShot: function(id,shotData) {
+    console.log("saving shot");
+    console.log(id);
+    console.log(shotData);
+    return axios.post("/api/players/"+id, shotData);
   },
+
 
 
 };

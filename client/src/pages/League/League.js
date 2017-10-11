@@ -7,13 +7,13 @@ import Input from "../../components/Input";
 import "./league.css";
 
 //placeholder data
-import players from "./players.json";
+//import players from "./players.json";
 
 class League extends Component {
   state = {
-    allPlayers: players,
+    allPlayers: [],
     articles: [],
-    availablePlayers: players,
+    availablePlayers: [],
     leagueID:"",
     newName:"",
     newHeight:"",
@@ -30,20 +30,16 @@ class League extends Component {
     redirectHome: false,
     redirectDashboard: false,
     redirectShotlogger:false,
-
-
   };
 
   componentDidMount(){
-    API.getPlayers(this.props.match.params.id)
-    .then(res => {
-      //if valid league login, set redirect to true so the redirect goes to the league page
-      console.log(res);
-      this.setState({
-        leagueID:res.data[0]._id,
-      })
-    })
-    .catch(err => console.log(err));
+    console.log(this.props.location.state);
+    this.setState({
+      allPlayers: this.props.location.state.allPlayers,
+      availablePlayers: this.props.location.state.allPlayers,
+      leagueID: this.props.location.state.leagueID,
+    });
+    
   };
 
   handleInputChange = event => {
@@ -86,7 +82,7 @@ class League extends Component {
     //add selected player list of players for selected team
  
     //grab index of the selected player based on id property
-    let index = this.state.allPlayers.findIndex(p => p.id === id)
+    let index = this.state.availablePlayers.findIndex(p => p._id === id)
     let current = this.state.currentTeam;
     
     //define temporary teamArray to replace state
@@ -99,11 +95,12 @@ class League extends Component {
     }
     //define temporary newPlayer object
     let newPlayer = {
-      id: this.state.allPlayers[index].id,
-      name: this.state.allPlayers[index].name,
-      image: this.state.allPlayers[index].image,
-      position: this.state.allPlayers[index].position,
-      height: this.state.allPlayers[index].height
+      id: this.state.availablePlayers[index]._id,
+      key: this.state.availablePlayers[index]._id,
+      name: this.state.availablePlayers[index].name,
+      image: this.state.availablePlayers[index].image,
+      position: this.state.availablePlayers[index].position,
+      height: this.state.availablePlayers[index].height
     }
     newTeam.push(newPlayer);
 
@@ -118,16 +115,11 @@ class League extends Component {
         team2: newTeam
       });
     }
+    //remove player from list of available players
+    let newAvailable = this.state.availablePlayers;
+    newAvailable = newAvailable.splice(index, 1);
+    console.log(this.state.availablePlayers);
     
-
-    // //remove player from list of available players
-    // let newAvailable = this.state.availablePlayers;
-    // newAvailable = newAvailable.splice(index, 1);
-    // this.setState({
-    //   availablePlayers: newAvailable
-    // });
-    // //this is correctly showing an array of 5 players but not rerendering list correctly below
-    // console.log(this.state.availablePlayers);
   };
 
   selectTeam = team => {
@@ -169,13 +161,13 @@ class League extends Component {
   render() {
 
     if (this.state.redirectDashboard) {
-      return <Redirect to={"/dashboard/" + this.props.match.params.id}/>;
+      return <Redirect to={{pathname:"/dashboard/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
     }
     if (this.state.redirectHome) {
       return <Redirect to={"/"}/>;
     }
     if (this.state.redirectShotlogger) {
-      return <Redirect to={"/shotlogger/" + this.props.match.params.id}/>;
+      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ team1:this.state.team1, team2:this.state.team2, allPlayers:this.state.allPlayers }}} />;
     }
 
     return (
@@ -230,8 +222,8 @@ class League extends Component {
             {this.state.availablePlayers.map(player => (
               <PlayerCard
                 selectPlayer={this.selectPlayer}
-                id={player.id}
-                key={player.id}
+                id={player._id}
+                key={player._id}
                 name={player.name}
                 image={player.image}
                 position={player.position}
@@ -252,7 +244,7 @@ class League extends Component {
               {this.state.team1.map(player => (
                   <PlayerCard
                     selectPlayer={this.selectPlayer}
-                    id={player.id}
+                    id={player._id}
                     key={player.id}
                     name={player.name}
                     image={player.image}
@@ -267,7 +259,7 @@ class League extends Component {
               {this.state.team2.map(player => (
                   <PlayerCard
                     selectPlayer={this.selectPlayer}
-                    id={player.id}
+                    id={player._id}
                     key={player.id}
                     name={player.name}
                     image={player.image}

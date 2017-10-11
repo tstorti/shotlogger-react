@@ -9,7 +9,8 @@ const PlayerCard = props => (
     <div className="content">
       <div>Name: {props.name}</div>
       <div>Position:{props.position}</div> 
-      <div>Height:{props.height}</div> 
+      <div>Height:{props.height}</div>
+      <div>{props.id}</div>
     </div>
   </div>
 );

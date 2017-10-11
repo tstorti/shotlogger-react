@@ -10,7 +10,9 @@ class Home extends Component {
     errorMessage:"",
     leagueLogin: "",
     password: "",
+    leagueID:"",
     passwordConfirm: "",
+    players:[],
     redirect: false,
     showNewForm: false,
     showLoginForm: true,
@@ -32,8 +34,11 @@ class Home extends Component {
           if(res.data[0].login === this.state.leagueLogin && res.data[0].password === this.state.password){
             this.setState({ 
               redirect: true,
-              errorMessage: "", 
+              errorMessage: "",
+              players:res.data[0].players,
+              leagueID:res.data[0]._id,
             });
+            console.log(res);
           }
           else{
             this.setState({ errorMessage: "Invalid credentials, please try again" });
@@ -71,7 +76,7 @@ class Home extends Component {
     const { redirect } = this.state;
     
     if (redirect) {
-      return <Redirect to={"/league/" + this.state.leagueLogin}/>;
+      return <Redirect to={{pathname:"/league/" + this.state.leagueLogin, state:{ allPlayers:this.state.players, leagueID:this.state.leagueID }}}/>;
     }
  
     return (
