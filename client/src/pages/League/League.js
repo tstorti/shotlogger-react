@@ -145,7 +145,7 @@ class League extends Component {
   };
 
   redirect = target =>{
-    if(target === "dashboard"){
+    if(target === "dashboard" ){
       this.setState({
         redirectDashboard:true,
       });
@@ -155,7 +155,7 @@ class League extends Component {
         redirectHome:true,
       });
     }
-    if(target === "shotlogger"){
+    if(target === "shotlogger" && this.state.team1[0]){
       this.setState({
         redirectShotlogger:true,
       });

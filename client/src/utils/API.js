@@ -23,6 +23,12 @@ export default {
     return axios.post("/api/players/"+id, shotData);
   },
 
+  // Gets league data for login
+  getShots: function(id) { 
+    console.log("getting shot data for: "+id);
+    return axios.get("/api/players/"+id);
+  },
+
 
 
 };

@@ -16,6 +16,8 @@ class Shotlogger extends Component {
       "y":"",
       "made":""
     },
+    game:"",
+    season:"",
     shooter:"",
     outcomeToggle:"made",
 
@@ -29,6 +31,9 @@ class Shotlogger extends Component {
       allPlayers: this.props.location.state.allPlayers,
       team1: this.props.location.state.team1,
       team2: this.props.location.state.team2,
+      game: this.props.location.state.gameName,
+      season: this.props.location.state.season,
+      shooter: this.props.location.state.team1[0].name
     });
   };
 
@@ -64,51 +69,30 @@ class Shotlogger extends Component {
     
 
     if(this.state.outcomeToggle ==="missed"){
-      let obj = {x: x, y: y, shooter:this.state.shooter, made:0};
-      this.setState({lastShot: obj});
+      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:0}}, () =>{
+        //save shot to the database
+        console.log(this.state.lastShot);
+        this.saveShot();
+      });
       
       ctx.fillStyle = "#ff2626"; // Red color	
-      let arrayVar = this.state.shots;
-      arrayVar.push({
-        "x":x,
-        "y":y,
-        "shooter":this.state.shooter,
-        "made":0,
-        //default z value
-        //this is the number of std deviations away from mean at this location
-        //"z":-2,
-        //"attempts":1,
-      });
-      this.setState({
-        shots: arrayVar
-      })
+  
     }
     else{
-      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:1}});
+      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:1}}, () =>{
+        //save shot to the database
+        console.log(this.state.lastShot);
+        this.saveShot();
+      });
 
       ctx.fillStyle = "#0000FF"; // Blue color	
-      let arrayVar = this.state.shots;
-      arrayVar.push({
-        "x":x,
-        "y":y,
-        "shooter":this.state.shooter,
-        "made":1,
-        //default z value
-        //this is the number of std deviations away from mean at this location
-        //"z":-2,
-        //"attempts":1,
-      });
-      this.setState({
-        shots: arrayVar
-      })
+    
     }
     
     ctx.beginPath(); //Start path
     ctx.arc(x, y, pointSize, 0, Math.PI * 2, true); // Draw a circle point using the arc function of the canvas with a point structure.
     ctx.fill(); // Close the path and fill.
 
-     //save shot to the database
-     this.saveShot();
   };
 
   saveShot = () => {

@@ -38,19 +38,33 @@ class Dashboard extends Component {
   };
 
   componentDidMount() {
-    BasketballShotChart();
-    this.translateData();
     console.log(this.props.location.state);
+    BasketballShotChart();
+    //this.translateData();
+    
+    console.log(this.props.location.state.allPlayers[0]._id);
+    this.getShots(this.props.location.state.allPlayers[0]._id);
+    
     this.setState({
       allPlayers: this.props.location.state.allPlayers,
+      selectedPlayer: this.props.location.state.allPlayers[0].name
     });
   };
 
   handleInputChange = event =>{
-    this.setState({selectedPlayer: event.target.value});
-    console.log(event.target.value);
-  }
+    this.setState({selectedPlayer: event.target.value}, () =>{
+      this.getShots(this.state.selectedPlayer);
+    });
+  };
 
+  getShots(id){
+    API.getShots(id)
+    .then(res => {
+        console.log(res);
+        this.translateData(res.data);
+    })
+    .catch(err => console.log(err));
+  };
   playerShotDistr = (data) => {
     //clear previous heat chart
     d3.select("svg").remove();
@@ -69,23 +83,21 @@ class Dashboard extends Component {
     //court length (y coord) goes from 0 to 35
     //court width (x coord) goes from 0 to 50
   };
-  translateData = () => {
+  translateData = (data) => {
     //convert input data from canvas into readable scale and x,y layout for d3
-    let array = this.state.gameData;
-    for(var i=0; i<this.state.loggerData.length;i++){
+    let array = [];
+    for(var i=0; i<data.length;i++){
       let newShot={};
-      newShot.x = this.state.loggerData[i].x * (50/600); 
-      newShot.y = (400 - this.state.loggerData[i].y) * (35/400); 
-      newShot.z = this.state.loggerData[i].z;
-      newShot.shooter = this.state.loggerData[i].shooter;
-      newShot.made = this.state.loggerData[i].made;
-      newShot.attempts = this.state.loggerData[i].attempts;
+      newShot.x = data[i].x * (50/600); 
+      newShot.y = (400 - data[i].y) * (35/400); 
+      newShot.z = data[i].z;
+      newShot.shooter = data[i].shooter;
+      newShot.made = data[i].made;
+      newShot.attempts = data[i].attempts;
       array.push(newShot);
     }
-    this.setState({
-      gameData: array
-    });
-    this.playerShotDistr(this.state.gameData);
+  
+    this.playerShotDistr(array);
   };
   
   redirect = target =>{
