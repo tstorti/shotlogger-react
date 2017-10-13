@@ -1,18 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Russo+One');
+
+body{
+
+}
+.game-name-input{
+    margin-left:20px;
+    margin-right:20px;
+}
 .d-f{
     display:flex;
 }
 .f-1{
     flex: 1;
 }
+.a-r {
+    margin-left: auto;
+}
+
 .btn-active{
-    background-color: green;
+    margin-top:10px;
+    background-color: #C4C400;
     padding: 10px;
     border-radius: 5px;
 }
+.btn-nav{
+    margin-top:10px;
+    padding:10px;
+    margin-right:10px;
+    border-radius: 5px;
+}
 .btn-inactive{
-    background-color: red;
+    margin-top:10px;
+    background-color: rgb(207, 207, 207);
     padding: 10px;
     border-radius: 5px;
+}
+.dropdown-container{
+    margin-right:50px;
+}
+.header{
+    font-family: 'Russo One', sans-serif;
+    background-color: lightblue;
+    margin-bottom: 20px;
+}
+.header2{
+    text-align:center;
+}
+.pageName{
+    margin-left: 20%;
+}
+.player-pool-container{
+    margin:10px;
+    border:1px solid black;
+    border-radius: 10px;
+    padding: 20px;
 }
 .modalContent{
     margin-top:20%;
@@ -20,7 +61,7 @@
 .modalOuter{
     position:relative;
     width: 40%;
-    margin: 20px auto;
+    margin: 40px auto;
 }
 .newPlayerModal{
     position:absolute;
@@ -31,4 +72,14 @@
     width:400px;
     height: 400px;
     z-index: 100;
+}
+.roster-container{
+    border: 1px solid black;
+    border-radius:10px;
+    padding: 20px;
+    margin: 5px;
+    min-height:250px;
+}
+.team-btn-container{
+    margin-top:20px;
 }

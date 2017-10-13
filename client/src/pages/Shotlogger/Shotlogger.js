@@ -145,51 +145,58 @@ class Shotlogger extends Component {
     
     return (
       <div>
-        <div>
-          <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
-          <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
-          <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
+        <div className="header">
+          <div className="d-f">
+          <h2 className="pageName">Shotlogger</h2>
+            <div className="a-r">
+              <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
+              <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
+              <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
+            </div>
+          </div>
         </div>
-        <div>
-          <div>Team1</div>
-            {this.state.team1.map(player => (
-              <div key={player.id}>
-                <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
-                <label htmlFor="id">{player.name}</label>
-              </div>
-            ))}
-        </div>
-        <div>
-          <div>Team2</div>
-            {this.state.team2.map(player => (
-              <div key={player.id}>
-                <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
-                <label htmlFor="id">{player.name}</label>
-              </div>
-            ))}
-        </div>
-        <div className="court-container">
-          <div >
+        <div className="d-f">
+          <div>
+            <div>
+              <div>Team1</div>
+                {this.state.team1.map(player => (
+                  <div key={player.id}>
+                    <input className="radio" type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
+                    <label htmlFor="id">{player.name}</label>
+                  </div>
+                ))}
+            </div>
+            <div>
+              <div>Team2</div>
+                {this.state.team2.map(player => (
+                  <div key={player.id}>
+                    <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
+                    <label htmlFor="id">{player.name}</label>
+                  </div>
+                ))}
+            </div>
+            <div className="outcome-toggle">
+              <div>Outcome:</div>
+              <input  type="radio" name="outcome" value="made" checked={this.state.outcomeToggle === 'made'}
+                  onChange={this.handleInputChange1}></input>
+              <label>Made</label>
+              <input type="radio" name="outcome" value="missed" checked={this.state.outcomeToggle === 'missed'}
+                  onChange={this.handleInputChange1}></input>
+              <label>Missed</label>
+            </div>
+          </div>
+          <div className="court-container">
             <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
           </div>
-          <div>
-            <input  type="radio" name="outcome" value="made" checked={this.state.outcomeToggle === 'made'}
-                onChange={this.handleInputChange1}></input>
-            <label>Made</label>
-            <input type="radio" name="outcome" value="missed" checked={this.state.outcomeToggle === 'missed'}
-                onChange={this.handleInputChange1}></input>
-            <label>Missed</label>
-          </div>
-          <div>  
-          </div>
+        </div>
           <div className="last">
             <div>Last Added</div>
             <div>Shooter: {this.state.lastShot.shooter}</div>
             <div>X Position: {this.state.lastShot.x} </div>
             <div>Y Postion: {this.state.lastShot.y}</div>
           </div>
-        </div>
       </div>
+      
     );
   }
 }

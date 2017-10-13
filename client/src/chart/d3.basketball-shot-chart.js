@@ -589,7 +589,7 @@ const BasketballShotChart = function () {
     // basketball hoop diameter (ft)
     basketDiameter: 1.5,
     // distance from baseline to backboard (ft)
-    basketProtrusionLength: 4,
+    basketProtrusionLength: 1,
     // backboard width (ft)
     basketWidth: 6,
     // title of hexagon color legend
@@ -646,9 +646,9 @@ const BasketballShotChart = function () {
     // distance from baseline where three point line because circular (ft)
     threePointCutoffLength: 14,
     // distance of three point line from basket (ft)
-    threePointRadius: 23.75,
+    threePointRadius: 23.5,
     // distance of corner three point line from basket (ft)
-    threePointSideRadius: 22, 
+    threePointSideRadius: 20, 
     // title of chart
     title: 'Shot chart',
     // method to determine x position of a bin on the court

@@ -36,10 +36,13 @@ class League extends Component {
 
   componentDidMount(){
     console.log(this.props.location.state);
+    let players = this.props.location.state.allPlayers
+    players = [...players];
+
     this.setState({
       allPlayers: this.props.location.state.allPlayers,
-      availablePlayers: this.props.location.state.allPlayers,
-      leagueID: this.props.location.state.leagueID,
+      availablePlayers: players,
+      leagueID: this.props.location.state.leagueID, 
     });
     
   };
@@ -50,6 +53,7 @@ class League extends Component {
       [name]: value
     });
   };
+
   handleInputChange2 = event =>{
     this.setState({seasonName: event.target.value});
     console.log(event.target.value);
@@ -86,7 +90,7 @@ class League extends Component {
 
   selectPlayer = id => {
     //add selected player list of players for selected team
- 
+
     //grab index of the selected player based on id property
     let index = this.state.availablePlayers.findIndex(p => p._id === id)
     let current = this.state.currentTeam;
@@ -123,7 +127,6 @@ class League extends Component {
     }
     //remove player from list of available players
     this.state.availablePlayers.splice(index, 1);
-    console.log(this.state.availablePlayers);
     
   };
 
@@ -177,80 +180,82 @@ class League extends Component {
 
     return (
       <div>
-        <div>
-          <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
-          <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Shotlogger</button>
-          <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
-        </div>  
-        <h2>League Home</h2>
-        {/* Player Creation */}
-        <div>
-          <button onClick={() => this.newPlayerDialog()}>Add New Player</button>
+        <div className="header">
+          <div className="d-f">
+            <h2 className="pageName">League Home</h2>
+            <div className="a-r">
+              <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
+              <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Shotlogger</button>
+              <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
+            </div>
+          </div>  
         </div>
-        <div className="modalOuter">
-          {this.state.showNewPlayerForm &&
-            <div className="newPlayerModal"> 
-              <div className="modalContent">
-                <Input
-                  name="newName"
-                  value={this.state.newName}
-                  onChange={this.handleInputChange}
-                  placeholder="Name"
-                />
-                <Input
-                  name="newPosition"
-                  value={this.state.newPosition}
-                  onChange={this.handleInputChange}
-                  placeholder="Position"
-                />
-                <Input
-                  name="newHeight"
-                  value={this.state.newHeight}
-                  onChange={this.handleInputChange}
-                  placeholder="Height"
-                />
-                <Input
-                  name="newImage"
-                  value={this.state.newImage}
-                  onChange={this.handleInputChange}
-                  placeholder="Image Link"
-                />
-              </div>
+        <div className="d-f">
+          {/* Season and Game Settings */}
+          <div className="d-f">
+            <div className="dropdown-container">
+              <div>Current Season</div>
               <div>
-                <button onClick={this.saveNewPlayer}>Save New Player</button>
-                <button onClick={() => this.newPlayerDialog()}>Close</button>
+                <select onChange={this.handleInputChange2} value={this.state.seasonName}>
+                  <option value="Summer 2017">Summer 2017</option>
+                  <option value="Fall 2017">Fall 2017</option>
+                  <option value="Winter 2017/18">Winter 2017/2018</option>
+                  <option value="Spring 2018">Spring 2018</option>
+                </select>
               </div>
             </div>
-          } 
+            
+          </div>
+          {/* Player Creation */}
+          <div className="a-r">
+            <button className="btn-new" onClick={() => this.newPlayerDialog()}>Add New Player</button>
+          </div>
+          <div className="modalOuter">
+            {this.state.showNewPlayerForm &&
+              <div className="newPlayerModal"> 
+                <div className="modalContent">
+                  <Input
+                    name="newName"
+                    value={this.state.newName}
+                    onChange={this.handleInputChange}
+                    placeholder="Name"
+                  />
+                  <Input
+                    name="newPosition"
+                    value={this.state.newPosition}
+                    onChange={this.handleInputChange}
+                    placeholder="Position"
+                  />
+                  <Input
+                    name="newHeight"
+                    value={this.state.newHeight}
+                    onChange={this.handleInputChange}
+                    placeholder="Height"
+                  />
+                  <Input
+                    name="newImage"
+                    value={this.state.newImage}
+                    onChange={this.handleInputChange}
+                    placeholder="Image Link"
+                  />
+                </div>
+                <div>
+                  <button onClick={this.saveNewPlayer}>Save New Player</button>
+                  <button onClick={() => this.newPlayerDialog()}>Close</button>
+                </div>
+              </div>
+            } 
+          </div>
         </div>
 
-        {/* Season and Game Settings */}
-        <div>
-          <div>
-            <div>Current Season</div>
-            <div>
-              <select onChange={this.handleInputChange2} value={this.state.seasonName}>
-                <option value="Summer 2017">Summer 2017</option>
-                <option value="Fall 2017">Fall 2017</option>
-                <option value="Winter 2017/18">Winter 2017/2018</option>
-                <option value="Spring 2018">Spring 2018</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <div>Set GameName</div>
-            <Input
-                name="gameName"
-                value={this.state.gameName}
-                onChange={this.handleInputChange}
-                placeholder="Enter a name for the game"
-              />
-          </div>
-        </div>
+        
         {/* Player Selection */}
         <div>
-          <div className="d-f">
-            <div>Player Pool</div>
+          <div className="player-pool-container">
+            <div className="header2">Availabile Players</div>
+             <div className="d-f" >
+            {/* Team Toggle Container */}
+       
             {this.state.availablePlayers.map(player => (
               <PlayerCard
                 selectPlayer={this.selectPlayer}
@@ -262,17 +267,33 @@ class League extends Component {
                 height={player.height}
               />
             ))}
+            </div>
           </div>
-          {/* Team Toggle Container */}
-          <div>
-            <button onClick={() => this.selectTeam('team1')} className={this.state.team1BtnClass}>Team 1</button>
-            <button onClick={() => this.selectTeam('team2')} className={this.state.team2BtnClass}>Team 2</button>
-          </div>
+          
           {/* Team Selections Container */}
           <div className="d-f">
+            <div className="game-name-input">Set GameName</div>
+            <Input
+                name="gameName"
+                value={this.state.gameName}
+                onChange={this.handleInputChange}
+                placeholder="Enter a name for the game"
+              />
+          </div>
+          <div className="d-f">
+            <div>
+              <div className="team-btn-container"> 
+                <div>
+                  <button onClick={() => this.selectTeam('team1')} className={this.state.team1BtnClass}>Team 1</button>
+                </div>
+                <div>  
+                  <button onClick={() => this.selectTeam('team2')} className={this.state.team2BtnClass}>Team 2</button>
+                </div>
+              </div>
+            </div>
             {/* Team 1 Container */}
-            <div className="f-1">
-              <div>Team 1</div>
+            <div className="f-1 roster-container">
+              <div>Team 1 Roster</div>
               {this.state.team1.map(player => (
                   <PlayerCard
                     selectPlayer={this.selectPlayer}
@@ -285,9 +306,9 @@ class League extends Component {
                   />
                 ))}
             </div>
-            <div className="f-1">
+            <div className="f-1 roster-container">
               {/* Team 2 Container */}
-              <div>Team 2</div>
+              <div>Team 2 Roster</div>
               {this.state.team2.map(player => (
                   <PlayerCard
                     selectPlayer={this.selectPlayer}

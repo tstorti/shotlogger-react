@@ -3,7 +3,6 @@ import axios from "axios";
 export default {
   // Gets league data for login
   getLeague: function(login) { 
-    console.log("getting league data");
     return axios.get("/api/leagues/"+login);
   },
   // Saves a league to the database
@@ -12,20 +11,15 @@ export default {
   },
   //Save new Player
   savePlayer: function(playerData) {
-    console.log("saving player");
     return axios.post("/api/players", playerData);
   },
   //Save new Shot
   saveShot: function(id,shotData) {
-    console.log("saving shot");
-    console.log(id);
-    console.log(shotData);
     return axios.post("/api/players/"+id, shotData);
   },
 
   // Gets league data for login
   getShots: function(id) { 
-    console.log("getting shot data for: "+id);
     return axios.get("/api/players/"+id);
   },
 
