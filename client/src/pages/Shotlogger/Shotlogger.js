@@ -18,6 +18,7 @@ class Shotlogger extends Component {
     },
     game:"",
     season:"",
+    leagueID:"",
     shooter:"",
     outcomeToggle:"made",
 
@@ -33,7 +34,8 @@ class Shotlogger extends Component {
       team2: this.props.location.state.team2,
       game: this.props.location.state.gameName,
       season: this.props.location.state.season,
-      shooter: this.props.location.state.team1[0].name
+      shooter: this.props.location.state.team1[0].name,
+      leagueID:this.props.location.state.leagueID,
     });
   };
 
@@ -96,6 +98,7 @@ class Shotlogger extends Component {
   };
 
   saveShot = () => {
+
     API.saveShot(this.state.lastShot.shooter, 
       {
         shooter:this.state.lastShot.shooter,
@@ -105,6 +108,7 @@ class Shotlogger extends Component {
         game:this.state.game,
         season:this.state.season,
         date: Date.now(),
+        league:this.state.leagueID,
       })
         .then(res => {
           //console.log
@@ -134,10 +138,10 @@ class Shotlogger extends Component {
   render() {
 
     if (this.state.redirectDashboard) {
-      return <Redirect to={{pathname:"/dashboard/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
+      return <Redirect to={{pathname:"/dashboard/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers, leagueID:this.state.leagueID }}}/>;
     }
     if (this.state.redirectLeague) {
-      return <Redirect to={{pathname:"/league/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
+      return <Redirect to={{pathname:"/league/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers, leagueID:this.state.leagueID }}}/>;
     }
     if (this.state.redirectHome) {
       return <Redirect to={"/"}/>;

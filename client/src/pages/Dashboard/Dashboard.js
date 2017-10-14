@@ -11,6 +11,7 @@ class Dashboard extends Component {
   
   state = {
     allPlayers:[],
+    leagueID:'',
     gameData:[],
 
     selectedPlayer:"",
@@ -18,6 +19,10 @@ class Dashboard extends Component {
     shootingPercentage:"",
     totalShots:"",
     madeShots:"",
+
+    leagueShootingPercentage:"",
+    leagueAverageTotalShots:"",
+    leagueAverageMadeShots:"",
 
     redirectHome: false,
     redirectLeague:false,
@@ -29,21 +34,34 @@ class Dashboard extends Component {
     BasketballShotChart();
     
     console.log(this.props.location.state.allPlayers[0]._id);
-    this.getShots(this.props.location.state.allPlayers[0]._id);
+    this.getPlayerShots(this.props.location.state.allPlayers[0]._id);
+    this.getAllShots(this.props.location.state.leagueID);
     
     this.setState({
       allPlayers: this.props.location.state.allPlayers,
-      selectedPlayer: this.props.location.state.allPlayers[0].name
+      selectedPlayer: this.props.location.state.allPlayers[0].name,
+      leagueID:this.props.location.state.leagueID,
     });
   };
 
   handleInputChange = event =>{
     this.setState({selectedPlayer: event.target.value}, () =>{
-      this.getShots(this.state.selectedPlayer);
+      this.getPlayerShots(this.state.selectedPlayer);
     });
   };
 
-  getShots(id){
+  getAllShots(id){
+    //should replace with leagueID
+    API.getAllShots(id)
+    .then(res => {
+        console.log(res);
+        //this.translateData(res.data);
+        this.calcLeagueSummaryStats(res.data);
+    })
+    .catch(err => console.log(err));
+  };
+
+  getPlayerShots(id){
     API.getShots(id)
     .then(res => {
         console.log(res);
@@ -61,7 +79,7 @@ class Dashboard extends Component {
     d3.select(document.getElementById('chart1'))
     .append("svg")
       .chart("BasketballShotChart", {
-      width: 600, 
+      width: 400, 
       title: '',
       })
     .draw(data); 
@@ -84,6 +102,23 @@ class Dashboard extends Component {
       shootingPercentage:100*(madeShots/totalShots),
       totalShots:totalShots,
       madeShots:madeShots,
+    })
+  };
+  calcLeagueSummaryStats = (data) => {
+    let totalShots = 0;
+    let madeShots = 0;
+    for(let i=0;i<data.length;i++){
+      if(data[i].made===1){
+        madeShots++;
+      }
+      totalShots++;
+    }
+    let averageShots = totalShots/this.state.allPlayers.length;
+    let averageMadeShots = madeShots/this.state.allPlayers.length
+    this.setState({
+      leagueShootingPercentage:100*(madeShots/totalShots),
+      leagueAverageTotalShots:averageShots,
+      leagueAverageMadeShots:averageMadeShots,
     })
   };
 
@@ -124,10 +159,10 @@ class Dashboard extends Component {
 
   render() {
     if (this.state.redirectShotlogger) {
-      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
+      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers, leagueID: this.state.leagueID }}}/>;
     }
     if (this.state.redirectLeague) {
-      return <Redirect to={{pathname:"/league/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
+      return <Redirect to={{pathname:"/league/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers, leagueID:this.state.leagueID }}}/>;
     }
     if (this.state.redirectHome) {
       return <Redirect to={"/"}/>;
@@ -158,11 +193,33 @@ class Dashboard extends Component {
         <div className="d-f">
           <div id="chart1"></div>
           <div>
-            <div>Summary Stats</div>
-            <div>Made: {this.state.madeShots}</div>
-            <div>Attempted: {this.state.totalShots}</div>
-            <div>Shooting Percentage: {this.state.shootingPercentage}%</div>
+            <table>
+              <tbody>
+                <tr>
+                  <th></th>
+                  <th>Player Stats</th>
+                  <th>League Average</th>
+                </tr>
+                <tr>
+                  <td>Made</td>
+                  <td>{this.state.madeShots}</td>
+                  <td>{Math.round(this.state.leagueAverageMadeShots)}</td>
+                </tr>
+                <tr>
+                  <td>Attempted</td>
+                  <td>{this.state.totalShots}</td>
+                  <td>{Math.round(this.state.leagueAverageTotalShots)}</td>
+                </tr>
+                <tr>
+                  <td>Shooting Percentage</td>
+                  <td>{Math.round(this.state.shootingPercentage)}%</td>
+                  <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          
+
         </div>
       </div>
     );

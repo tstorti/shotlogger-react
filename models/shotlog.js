@@ -18,6 +18,10 @@ var ShotlogSchema = new Schema({
         type: String,
         required: true
     },
+    league:{
+        type: String,
+        required: true
+    },
     made: {
         type: Number,
         required: true

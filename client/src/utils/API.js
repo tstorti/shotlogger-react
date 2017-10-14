@@ -15,12 +15,19 @@ export default {
   },
   //Save new Shot
   saveShot: function(id,shotData) {
+    console.log(shotData);
     return axios.post("/api/players/"+id, shotData);
   },
 
-  // Gets league data for login
+  // Gets league data for player
   getShots: function(id) { 
     return axios.get("/api/players/"+id);
+  },
+
+  // Gets all shots for league
+  getAllShots: function(id) { 
+    console.log("getting league shots");
+    return axios.get("/api/shotlogs/"+id);
   },
 
 

@@ -169,13 +169,13 @@ class League extends Component {
   render() {
 
     if (this.state.redirectDashboard) {
-      return <Redirect to={{pathname:"/dashboard/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers }}}/>;
+      return <Redirect to={{pathname:"/dashboard/" + this.props.match.params.id, state:{ allPlayers:this.state.allPlayers, leagueID:this.state.leagueID }}}/>;
     }
     if (this.state.redirectHome) {
       return <Redirect to={"/"}/>;
     }
     if (this.state.redirectShotlogger) {
-      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ team1:this.state.team1, team2:this.state.team2, gameName:this.state.gameName, season:this.state.seasonName, allPlayers:this.state.allPlayers }}} />;
+      return <Redirect to={{pathname:"/shotlogger/" + this.props.match.params.id, state:{ team1:this.state.team1, team2:this.state.team2, gameName:this.state.gameName, season:this.state.seasonName, allPlayers:this.state.allPlayers, leagueID:this.state.leagueID }}} />;
     }
 
     return (
