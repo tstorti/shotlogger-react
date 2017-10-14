@@ -16,6 +16,9 @@ body{
 .a-r {
     margin-left: auto;
 }
+.m-r{
+    margin-right: 20px;
+}
 
 .btn-active{
     margin-top:10px;
@@ -82,4 +85,7 @@ body{
 }
 .team-btn-container{
     margin-top:20px;
+}
+.warningMsg{
+    color:red;
 }

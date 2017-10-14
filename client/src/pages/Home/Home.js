@@ -16,6 +16,7 @@ class Home extends Component {
     redirect: false,
     showNewForm: false,
     showLoginForm: true,
+    warningLeagueNew:"",
   };
 
   handleInputChange = event => {
@@ -25,8 +26,6 @@ class Home extends Component {
     });
   };
   leagueLogin = () => {
-    console.log(this.state.leagueLogin);
-    console.log(this.state.password);
     
     API.getLeague(this.state.leagueLogin)
         .then(res => {
@@ -58,20 +57,30 @@ class Home extends Component {
     console.log(this.state.leagueLogin);
     console.log(this.state.password);
     console.log(this.state.passwordConfirm);
-    
-    API.saveLeague(
-      {
-        login:this.state.leagueLogin,
-        password:this.state.password,
-      })
+    if(this.state.password === this.passwordConfirm){
+      API.saveLeague(
+        {
+          login:this.state.leagueLogin,
+          password:this.state.password,
+        })
         .then(res => {
           this.setState({ redirect: true })
-          //redirect to league page for specific id?
-          console.log(res);
         })
         .catch(err => console.log(err));
+    }
+    else{
+      this.setState({
+        errorMessage:"Passwords don't match",
+      });
+    }  
   };
-
+  
+  leagueNewCancel = () => {
+    this.setState({
+      showLoginForm:true,
+      showNewForm:false,
+    });
+  }
   render() {
     const { redirect } = this.state;
     
@@ -81,7 +90,7 @@ class Home extends Component {
  
     return (
       <div>
-          <div className="header-primary">Welcome to StreetBallStats</div>
+          <div className="header-primary">Welcome to Streetball Scout</div>
             {/* Conditionally render different form if creating new League */}
             {this.state.showLoginForm &&
               <div className="login-container">
@@ -103,7 +112,7 @@ class Home extends Component {
                 </div>
                 <button  onClick={this.leagueLogin} className="btn-login">Login</button>
                 <button  onClick={this.leagueNew} className="btn-new">Create New</button>  
-                <div>{this.state.errorMessage}</div> 
+                <div className="warningMsg">{this.state.errorMessage}</div> 
               </div> 
             }
             {/* Conditionally render different form if creating new League */}
@@ -134,6 +143,8 @@ class Home extends Component {
                   />
                 </div>
                 <button  onClick={this.leagueNewSubmit} className="btn-new">Create New</button>
+                <button  onClick={this.leagueNewCancel} className="btn-new">Cancel</button>
+                <div className="warningMsg">{this.state.errorMessage}</div> 
               </div>
             }
             

@@ -32,6 +32,9 @@ class League extends Component {
     redirectHome: false,
     redirectDashboard: false,
     redirectShotlogger:false,
+
+    warningCreation:"",
+    warningShotlog:"",
   };
 
   componentDidMount(){
@@ -56,7 +59,6 @@ class League extends Component {
 
   handleInputChange2 = event =>{
     this.setState({seasonName: event.target.value});
-    console.log(event.target.value);
   }
 
   newPlayerDialog = () => {
@@ -66,10 +68,14 @@ class League extends Component {
   };
 
   saveNewPlayer = () => {
+    if(this.state.newName ==="" || this.state.newHeight==="" || this.state.newPostion==="" || this.state.newImage ===""){
+      this.setState({
+        warningCreation:"You must fill in all fields",
+      });
+    }
     //do api call, reset state to hide form
-    console.log(this.state.leagueID);
-    //TODO - still need to add reference to league ID for populate request
-    API.savePlayer(
+    else{
+      API.savePlayer(
       {
         name:this.state.newName,
         height:this.state.newHeight,
@@ -78,14 +84,30 @@ class League extends Component {
         leagueID: this.state.leagueID,
       })
         .then(res => {
-          //this.setState({ redirect: true })
-          //redirect to league page for specific id?
-          console.log(res);
-          this.setState({
-            showNewPlayerForm: false,
-          });
+          API.getLeague(this.props.match.params.id)
+          .then(res => {
+            //reset state with new available players and all players
+            let newPlayer = res.data[0].players[res.data[0].players.length-1];
+            let array = this.state.allPlayers;
+            let array2= this.state.availablePlayers;
+            array.push(newPlayer);
+            array2.push(newPlayer);
+            this.setState({
+              showNewPlayerForm: false,
+              warningCreation:"",
+              newName:"",
+              newHeight:"",
+              newPosition:"",
+              newImage:"",
+              allPlayers:array,
+              availablePlayers:array2,
+            });
+          
+          })
+          .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
+    }    
   };
 
   selectPlayer = id => {
@@ -127,7 +149,6 @@ class League extends Component {
     }
     //remove player from list of available players
     this.state.availablePlayers.splice(index, 1);
-    
   };
 
   selectTeam = team => {
@@ -149,6 +170,7 @@ class League extends Component {
 
   redirect = target =>{
     if(target === "dashboard" ){
+      
       this.setState({
         redirectDashboard:true,
       });
@@ -158,10 +180,24 @@ class League extends Component {
         redirectHome:true,
       });
     }
-    if(target === "shotlogger" && this.state.team1[0]){
-      this.setState({
-        redirectShotlogger:true,
-      });
+    if(target === "shotlogger"){
+      //check to make sure required info has been selected to log game stats
+      if(!this.state.team1[0] && !this.state.team2[0]){
+        this.setState({
+          warningShotlog:"You must select at least one player to log shots",
+        });
+      }
+      else if(this.state.gameName ===""){
+        this.setState({
+          warningShotlog:"You must provide a game name to log shots",
+        });
+      }
+      else{
+        this.setState({
+          redirectShotlogger:true,
+        });
+      }
+      
     }
   };
 
@@ -240,6 +276,9 @@ class League extends Component {
                   />
                 </div>
                 <div>
+                  <div className="warningMsg" >{this.state.warningCreation}</div>
+                </div>
+                <div>
                   <button onClick={this.saveNewPlayer}>Save New Player</button>
                   <button onClick={() => this.newPlayerDialog()}>Close</button>
                 </div>
@@ -256,29 +295,33 @@ class League extends Component {
              <div className="d-f" >
             {/* Team Toggle Container */}
        
-            {this.state.availablePlayers.map(player => (
-              <PlayerCard
-                selectPlayer={this.selectPlayer}
-                id={player._id}
-                key={player._id}
-                name={player.name}
-                image={player.image}
-                position={player.position}
-                height={player.height}
-              />
-            ))}
+              {this.state.availablePlayers.map(player => (
+                <PlayerCard
+                  selectPlayer={this.selectPlayer}
+                  id={player._id}
+                  key={player._id}
+                  name={player.name}
+                  image={player.image}
+                  position={player.position}
+                  height={player.height}
+                />
+              ))}
             </div>
           </div>
           
           {/* Team Selections Container */}
           <div className="d-f">
             <div className="game-name-input">Set GameName</div>
-            <Input
+            <div className="m-r">
+              <Input
                 name="gameName"
                 value={this.state.gameName}
                 onChange={this.handleInputChange}
                 placeholder="Enter a name for the game"
               />
+            </div>
+            <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Go to Shotlogger</button>
+            <div className="warningMsg">{this.state.warningShotlog}</div>
           </div>
           <div className="d-f">
             <div>
