@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import API from "../../utils/API";
 import Input from "../../components/Input";
-import "./Home.css";
+import "./main.css";
 
 class Home extends Component {
   state = {
@@ -90,7 +90,8 @@ class Home extends Component {
  
     return (
       <div>
-          <div className="header-primary">Welcome to Streetball Scout</div>
+          <div className="logo-container"><img className="logo" src="./logo.png" alt="logo"></img></div>
+          <div className="header-login">Welcome to Streetball Scout</div>
             {/* Conditionally render different form if creating new League */}
             {this.state.showLoginForm &&
               <div className="login-container">
@@ -110,8 +111,10 @@ class Home extends Component {
                     placeholder="Password"
                   />
                 </div>
-                <button  onClick={this.leagueLogin} className="btn-login">Login</button>
-                <button  onClick={this.leagueNew} className="btn-new">Create New</button>  
+                <div className="mt-77">
+                  <button  onClick={this.leagueLogin} className="btn-login">Login</button>
+                  <button  onClick={this.leagueNew} className="btn-login">Create New</button>  
+                </div>
                 <div className="warningMsg">{this.state.errorMessage}</div> 
               </div> 
             }
@@ -142,9 +145,9 @@ class Home extends Component {
                     placeholder="Confirm Password"
                   />
                 </div>
-                <button  onClick={this.leagueNewSubmit} className="btn-new">Create New</button>
-                <button  onClick={this.leagueNewCancel} className="btn-new">Cancel</button>
-                <div className="warningMsg">{this.state.errorMessage}</div> 
+                <button  onClick={this.leagueNewCancel} className="btn-login">Cancel</button>
+                <button  onClick={this.leagueNewSubmit} className="btn-login">Create New</button>
+                <div className="mt-10 warningMsg">{this.state.errorMessage}</div> 
               </div>
             }
             

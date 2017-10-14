@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import { Redirect } from 'react-router';
-import "./shotlogger.css"
+
 
 
 class Shotlogger extends Component {

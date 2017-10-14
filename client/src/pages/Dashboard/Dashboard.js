@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import "d3-hexbin";
 import "d3.chart";
 import BasketballShotChart from "../../chart/d3.basketball-shot-chart";
-import "./dashboard.css";
+
 
 class Dashboard extends Component {
   

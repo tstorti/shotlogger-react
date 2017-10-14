@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import API from "../../utils/API";
 import PlayerCard from "../../components/PlayerCard";
 import Input from "../../components/Input";
-import "./league.css";
+import logo from './logo.png';
 
 //placeholder data
 //import players from "./players.json";
@@ -18,6 +18,8 @@ class League extends Component {
     newHeight:"",
     newImage:"",
     newPosition:"",
+
+    setupGame:false,
 
     gameName:"",
     seasonName:"Winter 2017/18",
@@ -65,6 +67,10 @@ class League extends Component {
     this.setState({
       showNewPlayerForm: !this.state.showNewPlayerForm,
     });
+  };
+
+  newShotlogSession = () => {
+    this.setState({setupGame:true});
   };
 
   saveNewPlayer = () => {
@@ -168,6 +174,10 @@ class League extends Component {
     }
   };
 
+  showPlayerDetails = (id) =>{
+    //TODO - player modal with some basic stats information?
+  }
+
   redirect = target =>{
     if(target === "dashboard" ){
       
@@ -216,100 +226,89 @@ class League extends Component {
 
     return (
       <div>
-        <div className="header">
+        <div className="header-main">
           <div className="d-f">
-            <h2 className="pageName">League Home</h2>
+            <div className="ml-20 d-f">
+              <div><img className="logo-header" src={logo} alt="logo"></img></div>
+              <h2 className="ml-20">League Home</h2>
+            </div>
             <div className="a-r">
               <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
-              <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Shotlogger</button>
               <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
             </div>
           </div>  
         </div>
-        <div className="d-f">
-          {/* Season and Game Settings */}
-          <div className="d-f">
-            <div className="dropdown-container">
-              <div>Current Season</div>
-              <div>
-                <select onChange={this.handleInputChange2} value={this.state.seasonName}>
-                  <option value="Summer 2017">Summer 2017</option>
-                  <option value="Fall 2017">Fall 2017</option>
-                  <option value="Winter 2017/18">Winter 2017/2018</option>
-                  <option value="Spring 2018">Spring 2018</option>
-                </select>
-              </div>
-            </div>
-            
-          </div>
-          {/* Player Creation */}
-          <div className="a-r">
-            <button className="btn-new" onClick={() => this.newPlayerDialog()}>Add New Player</button>
-          </div>
-          <div className="modalOuter">
-            {this.state.showNewPlayerForm &&
-              <div className="newPlayerModal"> 
-                <div className="modalContent">
-                  <Input
-                    name="newName"
-                    value={this.state.newName}
-                    onChange={this.handleInputChange}
-                    placeholder="Name"
-                  />
-                  <Input
-                    name="newPosition"
-                    value={this.state.newPosition}
-                    onChange={this.handleInputChange}
-                    placeholder="Position"
-                  />
-                  <Input
-                    name="newHeight"
-                    value={this.state.newHeight}
-                    onChange={this.handleInputChange}
-                    placeholder="Height"
-                  />
-                  <Input
-                    name="newImage"
-                    value={this.state.newImage}
-                    onChange={this.handleInputChange}
-                    placeholder="Image Link"
-                  />
-                </div>
-                <div>
-                  <div className="warningMsg" >{this.state.warningCreation}</div>
-                </div>
-                <div>
-                  <button onClick={this.saveNewPlayer}>Save New Player</button>
-                  <button onClick={() => this.newPlayerDialog()}>Close</button>
-                </div>
-              </div>
-            } 
-          </div>
-        </div>
-
-        
-        {/* Player Selection */}
+        {!this.state.setupGame &&
         <div>
+          {/* Player Pool */}
           <div className="player-pool-container">
-            <div className="header2">Availabile Players</div>
-             <div className="d-f" >
-            {/* Team Toggle Container */}
-       
-              {this.state.availablePlayers.map(player => (
-                <PlayerCard
-                  selectPlayer={this.selectPlayer}
-                  id={player._id}
-                  key={player._id}
-                  name={player.name}
-                  image={player.image}
-                  position={player.position}
-                  height={player.height}
-                />
-              ))}
+            <div className="ta-c">
+              <span className="header-player-pool">{this.props.match.params.id} Players</span> 
+              <button className="btn-new" onClick={() => this.newPlayerDialog()}>Add New Player</button>
+              <button className="btn-new" onClick={() => this.newShotlogSession()}>New Shotlogger Session</button>
             </div>
+              {this.state.allPlayers.map(player => (
+                <div className="d-ib" key={player._id}>
+                  <PlayerCard
+                    selectPlayer={this.showPlayerDetails}
+                    id={player._id}
+                    name={player.name}
+                    image={player.image}
+                    position={player.position}
+                    height={player.height}
+                  />
+                </div>
+              ))}
           </div>
           
-          {/* Team Selections Container */}
+          {/* Player Creation */}
+          <div>
+            <div className="modalOuter">
+              {this.state.showNewPlayerForm &&
+                <div className="newPlayerModal"> 
+                  <div className="modalContent">
+                    <Input
+                      name="newName"
+                      value={this.state.newName}
+                      onChange={this.handleInputChange}
+                      placeholder="Name"
+                    />
+                    <Input
+                      name="newPosition"
+                      value={this.state.newPosition}
+                      onChange={this.handleInputChange}
+                      placeholder="Position"
+                    />
+                    <Input
+                      name="newHeight"
+                      value={this.state.newHeight}
+                      onChange={this.handleInputChange}
+                      placeholder="Height"
+                    />
+                    <Input
+                      name="newImage"
+                      value={this.state.newImage}
+                      onChange={this.handleInputChange}
+                      placeholder="Image Link"
+                    />
+                  </div>
+                  <div>
+                    <div className="warningMsg" >{this.state.warningCreation}</div>
+                  </div>
+                  <div>
+                    <button onClick={this.saveNewPlayer}>Save New Player</button>
+                    <button onClick={() => this.newPlayerDialog()}>Close</button>
+                  </div>
+                </div>
+              } 
+            </div>
+          </div>
+        </div>
+        }
+        {/* Player Selection if new game*/}
+        {this.state.setupGame &&
+        <div>
+          {/* Game Settings Container */}
           <div className="d-f">
             <div className="game-name-input">Set GameName</div>
             <div className="m-r">
@@ -320,52 +319,82 @@ class League extends Component {
                 placeholder="Enter a name for the game"
               />
             </div>
-            <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Go to Shotlogger</button>
-            <div className="warningMsg">{this.state.warningShotlog}</div>
-          </div>
-          <div className="d-f">
-            <div>
-              <div className="team-btn-container"> 
+            <div className="d-f">
+              <div className="dropdown-container">
+                <div>Current Season</div>
                 <div>
-                  <button onClick={() => this.selectTeam('team1')} className={this.state.team1BtnClass}>Team 1</button>
-                </div>
-                <div>  
-                  <button onClick={() => this.selectTeam('team2')} className={this.state.team2BtnClass}>Team 2</button>
+                  <select onChange={this.handleInputChange2} value={this.state.seasonName}>
+                    <option value="Summer 2017">Summer 2017</option>
+                    <option value="Fall 2017">Fall 2017</option>
+                    <option value="Winter 2017/18">Winter 2017/2018</option>
+                    <option value="Spring 2018">Spring 2018</option>
+                  </select>
                 </div>
               </div>
             </div>
+            <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Go to Shotlogger</button>
+            <div className="warningMsg">{this.state.warningShotlog}</div>
+          </div>
+
+          {/* Team Toggle Container */}
+          <div className="player-pool-container">
+            <div>
+              <span className="header-player-pool">Availabile Players</span>
+              <button onClick={() => this.selectTeam('team1')} className={this.state.team1BtnClass}>Team 1</button>
+              <button onClick={() => this.selectTeam('team2')} className={this.state.team2BtnClass}>Team 2</button>
+            </div>
+            <div> 
+              {this.state.availablePlayers.map(player => (
+                <div className="d-ib" key={player._id}>
+                  <PlayerCard
+                    selectPlayer={this.selectPlayer}
+                    id={player._id}
+                    name={player.name}
+                    image={player.image}
+                    position={player.position}
+                    height={player.height}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>        
+          
+          <div className="d-f">       
             {/* Team 1 Container */}
             <div className="f-1 roster-container">
-              <div>Team 1 Roster</div>
+              <div className="header-player-pool">Team 1 Roster</div>
               {this.state.team1.map(player => (
+                <div className="d-ib" key={player.name}>
                   <PlayerCard
-                    selectPlayer={this.selectPlayer}
+                    selectPlayer={this.showPlayerDetails}
                     id={player._id}
-                    key={player.id}
                     name={player.name}
                     image={player.image}
                     position={player.position}
                     height={player.height}
                   />
+                </div>
                 ))}
             </div>
-            <div className="f-1 roster-container">
-              {/* Team 2 Container */}
-              <div>Team 2 Roster</div>
+            {/* Team 2 Container */}
+            <div className="f-1 roster-container">          
+              <div className="header-player-pool">Team 2 Roster</div>
               {this.state.team2.map(player => (
+                <div className="d-ib" key={player.name}>
                   <PlayerCard
-                    selectPlayer={this.selectPlayer}
+                    selectPlayer={this.showPlayerDetails}
                     id={player._id}
-                    key={player.id}
                     name={player.name}
                     image={player.image}
                     position={player.position}
                     height={player.height}
                   />
+                </div>
                 ))}
             </div>
           </div>
         </div>
+        }
       </div>
     );
   }

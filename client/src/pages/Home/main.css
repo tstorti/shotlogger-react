@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css?family=Russo+One');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body{
+    background-color: #8390AB;
+    font-family: 'Roboto', sans-serif;
+}
+/* Fonts */
+.warningMsg{
+    font-weight:bold;
+    color:#801515;
+}
+
+/* Images */
+.logo{
+    width:100px;
+}
+.logo-header{
+    width:60px;
+}
+
+/* Spacing */
+.ta-c{
+    text-align:center;
+}
+.d-f{
+    display:flex;
+}
+.d-ib{
+    display:inline-block;
+}
+.f-1{
+    flex: 1;
+}
+.a-r {
+    margin-left: auto;
+}
+.ml-20{
+    margin-left:20px;
+}
+.m-r{
+    margin-right: 20px;
+}
+.mt-10{
+    margin-top:10px;
+}
+.mt-77{
+    margin-top:77px;
+}
+
+/* buttons */
+.btn-login{
+    background-color: #324977;
+    font-size:16px;
+    color: #CEAB68;
+    width: 150px;
+    padding:10px;
+    border-color:#10151F;
+    border-radius:5px;
+    margin-right: 25px;
+}
+.btn-login:hover{
+    background-color:#4C6189;
+}
+
+.btn-nav{
+    background-color: #324977;
+    font-size:16px;
+    color: #CEAB68;
+    padding:10px;
+    border-color:#10151F;
+    border-radius:5px;
+    margin-right: 25px;
+    margin-top:10px;
+}
+.btn-nav:hover{
+    background-color:#4C6189;
+}
+
+.btn-new{
+    background-color: #324977;
+    font-size:12px;
+    color: #CEAB68;
+    padding:10px;
+    border-color:#10151F;
+    border-radius:5px;
+    margin-left: 25px;
+    margin-bottom:10px;
+}
+.btn-nav:hover{
+    background-color:#4C6189;
+}
+
+.btn-active{
+    margin-top:10px;
+    background-color: #C4C400;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.btn-inactive{
+    margin-top:10px;
+    background-color: rgb(207, 207, 207);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Headers */
+.header-main{
+    font-family: 'Russo One', sans-serif;
+    background-color: #4C6189;
+    margin-bottom: 20px;
+}
+.header-player-pool{
+    color: #10151F;
+    font-size:20px;
+    font-family: 'Russo One', sans-serif;
+}
+
+.header-login{
+    font-family: 'Russo One', sans-serif;
+    font-size: 36px;
+    text-align: center;
+    margin: 30px;
+    color: #10151F;
+}
+
+/* Containers */
+.login-container{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo-container{
+    text-align:center;
+}
+
+.input{
+    background-color:transparent;
+    border-bottom: 2px solid #10151F;
+    border-top: transparent;
+    border-left: transparent;
+    border-right:transparent;
+    font-size:20px;
+    color:#10151F;
+}
+.input::placeholder{
+    color:#424B5D;
+}
+
+.input-container{
+    margin-bottom:25px;
+}
+
+.court-container{
+    text-align:center;
+}
+
+.roster-container{
+    border: 1px solid black;
+    border-radius:10px;
+    padding: 20px;
+    margin: 5px;
+    min-height:250px;
+}
+.team-btn-container{
+    margin-top:20px;
+}
+
+.court{
+    background:url("./court.svg")
+}
+
+.last{
+    margin:25px;
+    text-align:center;
+}
+.outcome-toggle{
+    margin-top: 20px;
+}
+
+
+
+.game-name-input{
+    margin-left:20px;
+    margin-right:20px;
+}
+
+.dropdown-container{
+    margin-right:50px;
+}
+.player-pool-container{
+    margin:10px;
+    border:1px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    width:90%;
+}
+
+/* modal */
+.modalContent{
+    margin-top:20%;
+}
+.modalOuter{
+    position:relative;
+    width: 40%;
+    margin: 40px auto;
+}
+.newPlayerModal{
+    position:absolute;
+    top:30%;
+    text-align:center;
+    background-color:white;
+    border: 1px solid black;
+    width:400px;
+    height: 400px;
+    z-index: 100;
+}
+
+/* ShotChart Styles */
+.shot-chart-court *{fill:transparent;stroke:#333;stroke-width:0.1}
+.shot-chart-court-ft-circle-bottom{stroke-dasharray:1.5, 1}
+.shot-chart-court-hoop,.shot-chart-court-backboard{z-index:100}
+.shot-chart-title{font-size:15%;text-transform:uppercase}
+.legend text{font-size:4%}
+

@@ -2,7 +2,7 @@ import React from "react";
 
 const Input = props => (
   <div>
-    <input type="text" {...props} />
+    <input className="input" type="text" {...props} />
   </div>
 );
 
