@@ -59,7 +59,7 @@ class Home extends Component {
     console.log(this.state.leagueLogin);
     console.log(this.state.password);
     console.log(this.state.passwordConfirm);
-    if(this.state.password === this.passwordConfirm){
+    if(this.state.password === this.state.passwordConfirm){
       API.saveLeague(
         {
           login:this.state.leagueLogin,
