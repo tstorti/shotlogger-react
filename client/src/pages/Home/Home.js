@@ -66,7 +66,12 @@ class Home extends Component {
           password:this.state.password,
         })
         .then(res => {
-          this.setState({ redirect: true })
+          console.log(res);
+          this.setState({ 
+            redirect: true,
+            leagueID:res.data._id,
+            players:[],
+          })
         })
         .catch(err => console.log(err));
     }
