@@ -8,51 +8,103 @@ class Shotlogger extends Component {
     allPlayers:[],
     team1:[],
     team2:[],
-    shots:[],
     lastShot:{
       "shooter":"",
       "x":"",
       "y":"",
-      "made":""
+      "made":"",
+      "shooterName":"",
+      "outcome":"",
     },
     game:"",
     season:"",
     leagueID:"",
     shooter:"",
+    shooterName:"",
     outcomeToggle:"made",
+
+    madeBtnClass:"btn-active",
+    missedBtnClass:"btn-inactive",
+    team1BtnClasses: [],
+    team2BtnClasses: [],
 
     redirectHome: false,
     redirectLeague:false,
     redirectDashboard: false,
   };
+
+  //set state with team selections and init all the button classes on the toggles
   componentDidMount(){
     console.log(this.props.location.state);
+    let team1 = this.props.location.state.team1;
+    let team2 = this.props.location.state.team2;
+    let team1BtnClasses =["btn-active"];
+    let team2BtnClasses =[];
+    for(let i=1;i<team1.length;i++){
+      team1BtnClasses.push("btn-inactive");
+    }
+    for(let i=0;i<team2.length;i++){
+      team2BtnClasses.push("btn-inactive");
+    }
+    
     this.setState({
       allPlayers: this.props.location.state.allPlayers,
       team1: this.props.location.state.team1,
       team2: this.props.location.state.team2,
       game: this.props.location.state.gameName,
       season: this.props.location.state.season,
-      shooter: this.props.location.state.team1[0].name,
+      shooter: this.props.location.state.team1[0].id,
+      shooterName:this.props.location.state.team1[0].name,
       leagueID:this.props.location.state.leagueID,
+      team1BtnClasses: team1BtnClasses,
+      team2BtnClasses:team2BtnClasses,
     });
   };
 
-  handleInputChange1 = event => {
-    const { value } = event.target;
-    this.setState({
-      outcomeToggle: value,
-    });
-    console.log(value);
-  };
-  handleInputChange2 = event => {
-    const { value } = event.target;
-    this.setState({
-      shooter: value,
-    });
-    console.log(value);
+  //change current state for outcome and also classNames on make/miss button toggles
+  changeOutcome = (outcome) => {
+    if(outcome ==="made"){
+      this.setState({
+        madeBtnClass:"btn-active",
+        missedBtnClass:"btn-inactive",
+        outcomeToggle:"made",
+      })
+    }
+    else{
+      this.setState({
+        madeBtnClass:"btn-inactive",
+        missedBtnClass:"btn-active",
+        outcomeToggle:"missed",
+      })
+    }
   };
 
+  //change current state for shooter and also classNames on player button toggles
+  changeShooter = (id, index, team, name) => {
+    let team1BtnClasses =[];
+    let team2BtnClasses =[];
+    for(let i=0;i<this.state.team1.length;i++){
+      team1BtnClasses.push("btn-inactive");
+    }
+    for(let i=0;i<this.state.team2.length;i++){
+      team2BtnClasses.push("btn-inactive");
+    }
+    if(team === "team1"){
+      team1BtnClasses.splice(index, 1, "btn-active");
+    }
+    else{
+      team2BtnClasses.splice(index, 1, "btn-active");
+    }
+    
+    this.setState({
+      shooterName:name,
+      shooter: id,
+      team1BtnClasses:team1BtnClasses,
+      team2BtnClasses:team2BtnClasses,
+    });
+  };
+
+  //grab position on the canvas from where user clicks
   getPosition = event => {
     var elem = event.target
     var rect = elem.getBoundingClientRect();
@@ -63,6 +115,7 @@ class Shotlogger extends Component {
     this.drawCoordinates(x,y);
   };
 
+  //draw new point on the court with color based on make/miss
   drawCoordinates = (x,y) => {
     var pointSize = 8; // Change according to the size of the point.
     var ctx = document.getElementById("canvas").getContext("2d");
@@ -70,23 +123,23 @@ class Shotlogger extends Component {
     
 
     if(this.state.outcomeToggle ==="missed"){
-      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:0}}, () =>{
+      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:0, shooterName:this.state.shooterName, outcome:"Missed"}}, () =>{
         //save shot to the database
         console.log(this.state.lastShot);
         this.saveShot();
       });
       
-      ctx.fillStyle = "#ff2626"; // Red color	
+      ctx.fillStyle = "#801515"; // Red color	
   
     }
     else{
-      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:1}}, () =>{
+      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:1, shooterName:this.state.shooterName, outcome:"Made"}}, () =>{
         //save shot to the database
         console.log(this.state.lastShot);
         this.saveShot();
       });
 
-      ctx.fillStyle = "#0000FF"; // Blue color	
+      ctx.fillStyle = "#003E00"; // Green color	
     
     }
     
@@ -96,8 +149,8 @@ class Shotlogger extends Component {
 
   };
 
+  //save last entry to the database
   saveShot = () => {
-
     API.saveShot(this.state.lastShot.shooter, 
       {
         shooter:this.state.lastShot.shooter,
@@ -116,6 +169,7 @@ class Shotlogger extends Component {
         .catch(err => console.log(err));
   };
 
+  //redirect conditions based on nav
   redirect = target =>{
     if(target === "dashboard"){
       this.setState({
@@ -166,43 +220,47 @@ class Shotlogger extends Component {
         <div className="page-content">
           <div className="d-f">
             <div>
+              {/* Team1 Toggles */}
               <div>
-                <div>Team1</div>
-                  {this.state.team1.map(player => (
+              <div className="mb-10 header-shotlogger ">Shooter:</div>
+              </div>
+              <div> 
+                <div className="mb-5">Team1</div>
+                  {this.state.team1.map((player, index) => (
                     <div key={player.id}>
-                      <input className="radio" type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
-                      <label htmlFor="id">{player.name}</label>
+                      <button className={this.state.team1BtnClasses[index]} onClick={() => this.changeShooter(player.id, index, "team1", player.name)}>{player.name}</button>
                     </div>
                   ))}
               </div>
+              {/* Team2 Toggles */}
               <div>
-                <div>Team2</div>
-                  {this.state.team2.map(player => (
+                <div className="mb-5">Team 2</div>
+                  {this.state.team2.map((player,index) => (
                     <div key={player.id}>
-                      <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
-                      <label htmlFor="id">{player.name}</label>
-                    </div>
+                    <button className={this.state.team2BtnClasses[index]} onClick={() => this.changeShooter(player.id, index, "team2", player.name)}>{player.name}</button>
+                  </div>
                   ))}
               </div>
-              <div className="outcome-toggle">
-                <div>Outcome:</div>
-                <input  type="radio" name="outcome" value="made" checked={this.state.outcomeToggle === 'made'}
-                    onChange={this.handleInputChange1}></input>
-                <label>Made</label>
-                <input type="radio" name="outcome" value="missed" checked={this.state.outcomeToggle === 'missed'}
-                    onChange={this.handleInputChange1}></input>
-                <label>Missed</label>
+              {/* Outcome Toggle */}
+              <div>
+                <div className="mb-10 header-shotlogger ">Outcome:</div>
+                  <div>
+                    <button className={this.state.madeBtnClass} onClick={() => this.changeOutcome("made")}>Make</button>
+                  </div>
+                  <div>
+                    <button className={this.state.missedBtnClass} onClick={() => this.changeOutcome("miss")}>Miss</button>
+                  </div>
               </div>
             </div>
+            {/* Court */}
             <div className="court-container">
               <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
             </div>
           </div>
-            <div className="last">
-              <div>Last Added</div>
-              <div>Shooter: {this.state.lastShot.shooter}</div>
-              <div>X Position: {this.state.lastShot.x} </div>
-              <div>Y Postion: {this.state.lastShot.y}</div>
+            <div>
+              <div className="header-shotlogger mb-5">Last Shot</div>
+              <div className="mb-5">Shooter: {this.state.lastShot.shooterName}</div>
+              <div>Outcome: {this.state.lastShot.outcome} </div>
             </div>
         </div>
       </div>

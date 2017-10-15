@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 body{
-    background-color: #A6B0C1;
+    background-color: #C4CEDF;
     font-family: 'Roboto', sans-serif;
 }
 /* Fonts */
@@ -30,13 +30,19 @@ body{
     display:inline-block;
 }
 .f-1{
-    flex: 1;
+    flex: auto;
 }
 .a-r {
     margin-left: auto;
 }
 .mb-5{
     margin-bottom:5px;
+}
+.mb-10{
+    margin-bottom:10px;
+}
+.mb-20{
+    margin-bottom:20px;
 }
 .ml-20{
     margin-left:20px;
@@ -103,9 +109,11 @@ body{
     border-radius:5px;
     margin-left: 25px;
     margin-bottom:10px;
+    width:125px;
 }
 
 .btn-inactive{
+    width:125px;
     opacity:.5;
     background-color: #D5D8DC;
     font-size:14px;
@@ -144,6 +152,10 @@ body{
     margin: 30px;
     color: #10151F;
 }
+.header-shotlogger{
+    font-size:16px;
+    font-family: 'Russo One', sans-serif;
+}
 
 /* Containers */
 .page-content{
@@ -164,6 +176,36 @@ body{
     background-color: #5B759D;
     border-radius:10px;
 }
+.court-dashboard{
+    background-color: white;
+    margin:20px;
+    border-radius:10px;
+    border: 2px solid #10151F;
+}
+.court-container{
+    text-align:center;
+}
+.court{
+    background:url("./court.svg")
+}
+
+.roster-container{
+    border: 1px solid black;
+    border-radius:10px;
+    padding: 20px;
+    margin: 5px;
+    min-height:250px;
+}
+
+.player-pool-container{
+    margin:10px;
+    border:1px solid #10151F;
+    border-radius: 10px;
+    padding: 20px;
+    width:90%;
+}
+
+/* Inputs and Dropdowns */
 
 .input{
     background-color:transparent;
@@ -178,54 +220,40 @@ body{
     color:#424B5D;
 }
 
-.input-container{
-    margin-bottom:25px;
-}
-
 .select-season{
     width:140px;
     border-color:#10151F;
     color: #10151F;
-    background-color: #A6B0C1;
+    background-color: #C4CEDF;
 }
 
-.court-container{
-    text-align:center;
+.select-player{
+    width:140px;
+    font-size:18px;
+    border-color:#10151F;
+    color: #10151F;
+    background-color: #C4CEDF;
 }
 
-.roster-container{
-    border: 1px solid black;
-    border-radius:10px;
-    padding: 20px;
-    margin: 5px;
-    min-height:250px;
+/* Tables */
+td{
+    padding-right:20px;
+    text-align:right;
 }
-.team-btn-container{
-    margin-top:20px;
+th{
+    font-family: 'Russo One', sans-serif;
+    padding-right:10px;
+    padding-bottom:10px;
+    padding-top:5px;
 }
-
-.court{
-    background:url("./court.svg")
+tr{
+    border-bottom:1px solid black;
 }
-
-.last{
-    margin:25px;
-    text-align:center;
-}
-.outcome-toggle{
-    margin-top: 20px;
+.section-break{
+    width:100%;
+    border-bottom:1px solid #10151F;
 }
 
-.dropdown-container{
-    margin-right:50px;
-}
-.player-pool-container{
-    margin:10px;
-    border:1px solid black;
-    border-radius: 10px;
-    padding: 20px;
-    width:90%;
-}
 
 /* modal */
 .modalContent{
@@ -241,7 +269,7 @@ body{
     top:30%;
     text-align:center;
     background-color:white;
-    border: 1px solid black;
+    border: 1px solid #10151F;
     width:400px;
     height: 400px;
     z-index: 100;
