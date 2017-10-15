@@ -5,6 +5,7 @@ import * as d3 from "d3";
 import "d3-hexbin";
 import "d3.chart";
 import BasketballShotChart from "../../chart/d3.basketball-shot-chart";
+import logo from './logo.png';
 
 
 class Dashboard extends Component {
@@ -171,55 +172,63 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <div className="header">
+        {/* Header */}
+        <div className="header-main">
           <div className="d-f">
-            <h2 className="pageName">Dashboard</h2>
+            <div className="ml-20 d-f">
+              <div><img className="logo-header" src={logo} alt="logo"></img></div>
+              <div className="ml-20">Shotlogger</div>
+            </div>
             <div className="a-r">
               <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
               <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
             </div>
-          </div>
+          </div>  
         </div>
-        <div>
-          <div>Stats for Player: </div>
-          <div>
-            <select onChange={this.handleInputChange} value={this.state.selectedPlayer}>
-              {this.state.allPlayers.map(player => (
-                <option key={player._id} value={player._id}>{player.name}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="d-f">
-          <div id="chart1"></div>
-          <div>
-            <table>
-              <tbody>
-                <tr>
-                  <th></th>
-                  <th>Player Stats</th>
-                  <th>League Average</th>
-                </tr>
-                <tr>
-                  <td>Made</td>
-                  <td>{this.state.madeShots}</td>
-                  <td>{Math.round(this.state.leagueAverageMadeShots)}</td>
-                </tr>
-                <tr>
-                  <td>Attempted</td>
-                  <td>{this.state.totalShots}</td>
-                  <td>{Math.round(this.state.leagueAverageTotalShots)}</td>
-                </tr>
-                <tr>
-                  <td>Shooting Percentage</td>
-                  <td>{Math.round(this.state.shootingPercentage)}%</td>
-                  <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          
 
+        {/* Page Content */}
+        <div className="page-content">
+          <div>
+            <div>Stats for Player: </div>
+            <div>
+              <select onChange={this.handleInputChange} value={this.state.selectedPlayer}>
+                {this.state.allPlayers.map(player => (
+                  <option key={player._id} value={player._id}>{player.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="d-f">
+            <div id="chart1"></div>
+            <div>
+              <table>
+                <tbody>
+                  <tr>
+                    <th></th>
+                    <th>Player Stats</th>
+                    <th>League Average</th>
+                  </tr>
+                  <tr>
+                    <td>Made</td>
+                    <td>{this.state.madeShots}</td>
+                    <td>{Math.round(this.state.leagueAverageMadeShots)}</td>
+                  </tr>
+                  <tr>
+                    <td>Attempted</td>
+                    <td>{this.state.totalShots}</td>
+                    <td>{Math.round(this.state.leagueAverageTotalShots)}</td>
+                  </tr>
+                  <tr>
+                    <td>Shooting Percentage</td>
+                    <td>{Math.round(this.state.shootingPercentage)}%</td>
+                    <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+
+          </div>
         </div>
       </div>
     );

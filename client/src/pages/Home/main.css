@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 body{
-    background-color: #8390AB;
+    background-color: #A6B0C1;
     font-family: 'Roboto', sans-serif;
 }
 /* Fonts */
@@ -35,10 +35,13 @@ body{
 .a-r {
     margin-left: auto;
 }
+.mb-5{
+    margin-bottom:5px;
+}
 .ml-20{
     margin-left:20px;
 }
-.m-r{
+.mr-20{
     margin-right: 20px;
 }
 .mt-10{
@@ -79,37 +82,54 @@ body{
 
 .btn-new{
     background-color: #324977;
-    font-size:12px;
-    color: #CEAB68;
+    font-size:14px;
+    color: #D98C00;
     padding:10px;
     border-color:#10151F;
     border-radius:5px;
     margin-left: 25px;
     margin-bottom:10px;
 }
-.btn-nav:hover{
+.btn-new:hover{
     background-color:#4C6189;
 }
 
 .btn-active{
-    margin-top:10px;
-    background-color: #C4C400;
-    padding: 10px;
-    border-radius: 5px;
+    background-color: #CEAA68;
+    font-size:14px;
+    color: #10151F;
+    padding:10px;
+    border-color:#10151F;
+    border-radius:5px;
+    margin-left: 25px;
+    margin-bottom:10px;
 }
 
 .btn-inactive{
-    margin-top:10px;
-    background-color: rgb(207, 207, 207);
-    padding: 10px;
-    border-radius: 5px;
+    opacity:.5;
+    background-color: #D5D8DC;
+    font-size:14px;
+    color: #4C6189;
+    padding:10px;
+    border-color:#ABB5C6;
+    border-radius:5px;
+    margin-left: 25px;
+    margin-bottom:10px;
 }
-
+.btn-inactive:hover{
+    background-color:#CEAA68;
+    opacity:.8;
+}
 /* Headers */
 .header-main{
+    width:100%;
     font-family: 'Russo One', sans-serif;
-    background-color: #4C6189;
-    margin-bottom: 20px;
+    background-color: white;
+    padding-top:10px;
+    font-size: 30px;
+    border-bottom: 4px solid #324977;
+    position:fixed;
+    z-index:1;
 }
 .header-player-pool{
     color: #10151F;
@@ -126,6 +146,9 @@ body{
 }
 
 /* Containers */
+.page-content{
+    padding-top:120px;
+}
 .login-container{
     text-align:center;
     margin-bottom:25px;
@@ -133,6 +156,13 @@ body{
 
 .logo-container{
     text-align:center;
+}
+.card-container{
+    padding:5px;
+}
+.card-container:hover{
+    background-color: #5B759D;
+    border-radius:10px;
 }
 
 .input{
@@ -150,6 +180,13 @@ body{
 
 .input-container{
     margin-bottom:25px;
+}
+
+.select-season{
+    width:140px;
+    border-color:#10151F;
+    color: #10151F;
+    background-color: #A6B0C1;
 }
 
 .court-container{
@@ -177,13 +214,6 @@ body{
 }
 .outcome-toggle{
     margin-top: 20px;
-}
-
-
-
-.game-name-input{
-    margin-left:20px;
-    margin-right:20px;
 }
 
 .dropdown-container{

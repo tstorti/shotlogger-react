@@ -13,6 +13,7 @@ class League extends Component {
     allPlayers: [],
     articles: [],
     availablePlayers: [],
+    leagueName:"",
     leagueID:"",
     newName:"",
     newHeight:"",
@@ -44,10 +45,14 @@ class League extends Component {
     let players = this.props.location.state.allPlayers
     players = [...players];
 
+    let league = this.props.match.params.id;
+    league = league.charAt(0).toUpperCase() + league.slice(1);
+    
     this.setState({
       allPlayers: this.props.location.state.allPlayers,
       availablePlayers: players,
       leagueID: this.props.location.state.leagueID, 
+      leagueName:league,
     });
     
   };
@@ -69,6 +74,9 @@ class League extends Component {
     });
   };
 
+  cancelShotlogSession = () => {
+    this.setState({setupGame:false});
+  }
   newShotlogSession = () => {
     this.setState({setupGame:true});
   };
@@ -194,12 +202,12 @@ class League extends Component {
       //check to make sure required info has been selected to log game stats
       if(!this.state.team1[0] && !this.state.team2[0]){
         this.setState({
-          warningShotlog:"You must select at least one player to log shots",
+          warningShotlog:"You must select at least one player to log shots!",
         });
       }
       else if(this.state.gameName ===""){
         this.setState({
-          warningShotlog:"You must provide a game name to log shots",
+          warningShotlog:"You must provide a game name to log shots!",
         });
       }
       else{
@@ -230,7 +238,7 @@ class League extends Component {
           <div className="d-f">
             <div className="ml-20 d-f">
               <div><img className="logo-header" src={logo} alt="logo"></img></div>
-              <h2 className="ml-20">League Home</h2>
+              <div className="ml-20">League Home</div>
             </div>
             <div className="a-r">
               <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
@@ -238,163 +246,167 @@ class League extends Component {
             </div>
           </div>  
         </div>
-        {!this.state.setupGame &&
-        <div>
-          {/* Player Pool */}
-          <div className="player-pool-container">
-            <div className="ta-c">
-              <span className="header-player-pool">{this.props.match.params.id} Players</span> 
-              <button className="btn-new" onClick={() => this.newPlayerDialog()}>Add New Player</button>
-              <button className="btn-new" onClick={() => this.newShotlogSession()}>New Shotlogger Session</button>
-            </div>
-              {this.state.allPlayers.map(player => (
-                <div className="d-ib" key={player._id}>
-                  <PlayerCard
-                    selectPlayer={this.showPlayerDetails}
-                    id={player._id}
-                    name={player.name}
-                    image={player.image}
-                    position={player.position}
-                    height={player.height}
-                  />
-                </div>
-              ))}
-          </div>
-          
-          {/* Player Creation */}
+        {/* Content */}
+        <div className="page-content">
+          {!this.state.setupGame &&
           <div>
-            <div className="modalOuter">
-              {this.state.showNewPlayerForm &&
-                <div className="newPlayerModal"> 
-                  <div className="modalContent">
-                    <Input
-                      name="newName"
-                      value={this.state.newName}
-                      onChange={this.handleInputChange}
-                      placeholder="Name"
-                    />
-                    <Input
-                      name="newPosition"
-                      value={this.state.newPosition}
-                      onChange={this.handleInputChange}
-                      placeholder="Position"
-                    />
-                    <Input
-                      name="newHeight"
-                      value={this.state.newHeight}
-                      onChange={this.handleInputChange}
-                      placeholder="Height"
-                    />
-                    <Input
-                      name="newImage"
-                      value={this.state.newImage}
-                      onChange={this.handleInputChange}
-                      placeholder="Image Link"
+            {/* Player Pool */}
+            <div className="player-pool-container">
+              <div className="ta-c">
+                <span className="header-player-pool">{this.state.leagueName} Players</span> 
+                <button className="btn-new" onClick={() => this.newPlayerDialog()}>Add New Player</button>
+                <button className="btn-new" onClick={() => this.newShotlogSession()}>New Shotlogger Session</button>
+              </div>
+                {this.state.allPlayers.map(player => (
+                  <div className="d-ib" key={player._id}>
+                    <PlayerCard
+                      selectPlayer={this.showPlayerDetails}
+                      id={player._id}
+                      name={player.name}
+                      image={player.image}
+                      position={player.position}
+                      height={player.height}
                     />
                   </div>
-                  <div>
-                    <div className="warningMsg" >{this.state.warningCreation}</div>
-                  </div>
-                  <div>
-                    <button onClick={this.saveNewPlayer}>Save New Player</button>
-                    <button onClick={() => this.newPlayerDialog()}>Close</button>
-                  </div>
-                </div>
-              } 
+                ))}
             </div>
-          </div>
-        </div>
-        }
-        {/* Player Selection if new game*/}
-        {this.state.setupGame &&
-        <div>
-          {/* Game Settings Container */}
-          <div className="d-f">
-            <div className="game-name-input">Set GameName</div>
-            <div className="m-r">
-              <Input
-                name="gameName"
-                value={this.state.gameName}
-                onChange={this.handleInputChange}
-                placeholder="Enter a name for the game"
-              />
-            </div>
-            <div className="d-f">
-              <div className="dropdown-container">
-                <div>Current Season</div>
-                <div>
-                  <select onChange={this.handleInputChange2} value={this.state.seasonName}>
-                    <option value="Summer 2017">Summer 2017</option>
-                    <option value="Fall 2017">Fall 2017</option>
-                    <option value="Winter 2017/18">Winter 2017/2018</option>
-                    <option value="Spring 2018">Spring 2018</option>
-                  </select>
-                </div>
+            
+            {/* Player Creation */}
+            <div>
+              <div className="modalOuter">
+                {this.state.showNewPlayerForm &&
+                  <div className="newPlayerModal"> 
+                    <div className="modalContent">
+                      <Input
+                        name="newName"
+                        value={this.state.newName}
+                        onChange={this.handleInputChange}
+                        placeholder="Name"
+                      />
+                      <Input
+                        name="newPosition"
+                        value={this.state.newPosition}
+                        onChange={this.handleInputChange}
+                        placeholder="Position"
+                      />
+                      <Input
+                        name="newHeight"
+                        value={this.state.newHeight}
+                        onChange={this.handleInputChange}
+                        placeholder="Height"
+                      />
+                      <Input
+                        name="newImage"
+                        value={this.state.newImage}
+                        onChange={this.handleInputChange}
+                        placeholder="Image Link"
+                      />
+                    </div>
+                    <div>
+                      <div className="warningMsg" >{this.state.warningCreation}</div>
+                    </div>
+                    <div>
+                      <button onClick={this.saveNewPlayer}>Save New Player</button>
+                      <button onClick={() => this.newPlayerDialog()}>Close</button>
+                    </div>
+                  </div>
+                } 
               </div>
             </div>
-            <button className="btn-nav" onClick={() => this.redirect("shotlogger")}>Go to Shotlogger</button>
-            <div className="warningMsg">{this.state.warningShotlog}</div>
           </div>
+          }
+          {/* Player Selection if new game*/}
+          {this.state.setupGame &&
+          <div>
+            {/* Game Settings Container */}
+            <div className="d-f">
+              <div className="ml-20">
+                <Input
+                  name="gameName"
+                  value={this.state.gameName}
+                  onChange={this.handleInputChange}
+                  placeholder="Enter a name for the game"
+                />
+              </div>
+              <button className="btn-new" onClick={() => this.redirect("shotlogger")}>Go to Shotlogger</button>
+              <button className="btn-new" onClick={() => this.cancelShotlogSession()}>Cancel New Game</button>
+              <div className="ml-20 mt-10 warningMsg">{this.state.warningShotlog}</div>
+              <div className="d-f a-r">
+                <div className="ml-20 mr-20">
+                  <div className="mb-5">Current Season</div>
+                  <div>
+                    <select className="select-season" onChange={this.handleInputChange2} value={this.state.seasonName}>
+                      <option value="Summer 2017">Summer 2017</option>
+                      <option value="Fall 2017">Fall 2017</option>
+                      <option value="Winter 2017/18">Winter 2017/2018</option>
+                      <option value="Spring 2018">Spring 2018</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-          {/* Team Toggle Container */}
-          <div className="player-pool-container">
-            <div>
-              <span className="header-player-pool">Availabile Players</span>
-              <button onClick={() => this.selectTeam('team1')} className={this.state.team1BtnClass}>Team 1</button>
-              <button onClick={() => this.selectTeam('team2')} className={this.state.team2BtnClass}>Team 2</button>
             </div>
-            <div> 
-              {this.state.availablePlayers.map(player => (
-                <div className="d-ib" key={player._id}>
-                  <PlayerCard
-                    selectPlayer={this.selectPlayer}
-                    id={player._id}
-                    name={player.name}
-                    image={player.image}
-                    position={player.position}
-                    height={player.height}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>        
-          
-          <div className="d-f">       
-            {/* Team 1 Container */}
-            <div className="f-1 roster-container">
-              <div className="header-player-pool">Team 1 Roster</div>
-              {this.state.team1.map(player => (
-                <div className="d-ib" key={player.name}>
-                  <PlayerCard
-                    selectPlayer={this.showPlayerDetails}
-                    id={player._id}
-                    name={player.name}
-                    image={player.image}
-                    position={player.position}
-                    height={player.height}
-                  />
-                </div>
+
+            {/* Team Toggle Container */}
+            <div className="player-pool-container">
+              <div>
+                <span className="header-player-pool mr-20">Player Selection for:</span>
+                <button onClick={() => this.selectTeam('team1')} className={this.state.team1BtnClass}>Team 1</button>
+                <button onClick={() => this.selectTeam('team2')} className={this.state.team2BtnClass}>Team 2</button>
+              </div>
+              <div> 
+                {this.state.availablePlayers.map(player => (
+                  <div className="d-ib card-container" key={player._id}>
+                    <PlayerCard
+                      selectPlayer={this.selectPlayer}
+                      id={player._id}
+                      name={player.name}
+                      image={player.image}
+                      position={player.position}
+                      height={player.height}
+                    />
+                  </div>
                 ))}
-            </div>
-            {/* Team 2 Container */}
-            <div className="f-1 roster-container">          
-              <div className="header-player-pool">Team 2 Roster</div>
-              {this.state.team2.map(player => (
-                <div className="d-ib" key={player.name}>
-                  <PlayerCard
-                    selectPlayer={this.showPlayerDetails}
-                    id={player._id}
-                    name={player.name}
-                    image={player.image}
-                    position={player.position}
-                    height={player.height}
-                  />
-                </div>
-                ))}
+              </div>
+            </div>        
+            
+            <div className="d-f">       
+              {/* Team 1 Container */}
+              <div className="f-1 roster-container">
+                <div className="header-player-pool">Team 1 Roster</div>
+                {this.state.team1.map(player => (
+                  <div className="d-ib" key={player.name}>
+                    <PlayerCard
+                      selectPlayer={this.showPlayerDetails}
+                      id={player._id}
+                      name={player.name}
+                      image={player.image}
+                      position={player.position}
+                      height={player.height}
+                    />
+                  </div>
+                  ))}
+              </div>
+              {/* Team 2 Container */}
+              <div className="f-1 roster-container">          
+                <div className="header-player-pool">Team 2 Roster</div>
+                {this.state.team2.map(player => (
+                  <div className="d-ib" key={player.name}>
+                    <PlayerCard
+                      selectPlayer={this.showPlayerDetails}
+                      id={player._id}
+                      name={player.name}
+                      image={player.image}
+                      position={player.position}
+                      height={player.height}
+                    />
+                  </div>
+                  ))}
+              </div>
             </div>
           </div>
+          }
         </div>
-        }
       </div>
     );
   }

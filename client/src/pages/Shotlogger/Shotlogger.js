@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import { Redirect } from 'react-router';
-
-
+import logo from './logo.png';
 
 class Shotlogger extends Component {
   state = {
@@ -149,56 +148,63 @@ class Shotlogger extends Component {
     
     return (
       <div>
-        <div className="header">
+        {/* Header */}
+        <div className="header-main">
           <div className="d-f">
-          <h2 className="pageName">Shotlogger</h2>
+            <div className="ml-20 d-f">
+              <div><img className="logo-header" src={logo} alt="logo"></img></div>
+              <div className="ml-20">Shotlogger</div>
+            </div>
             <div className="a-r">
               <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
               <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
               <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
             </div>
-          </div>
+          </div>  
         </div>
-        <div className="d-f">
-          <div>
+        {/* Page Content */}
+        <div className="page-content">
+          <div className="d-f">
             <div>
-              <div>Team1</div>
-                {this.state.team1.map(player => (
-                  <div key={player.id}>
-                    <input className="radio" type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
-                    <label htmlFor="id">{player.name}</label>
-                  </div>
-                ))}
+              <div>
+                <div>Team1</div>
+                  {this.state.team1.map(player => (
+                    <div key={player.id}>
+                      <input className="radio" type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
+                      <label htmlFor="id">{player.name}</label>
+                    </div>
+                  ))}
+              </div>
+              <div>
+                <div>Team2</div>
+                  {this.state.team2.map(player => (
+                    <div key={player.id}>
+                      <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
+                      <label htmlFor="id">{player.name}</label>
+                    </div>
+                  ))}
+              </div>
+              <div className="outcome-toggle">
+                <div>Outcome:</div>
+                <input  type="radio" name="outcome" value="made" checked={this.state.outcomeToggle === 'made'}
+                    onChange={this.handleInputChange1}></input>
+                <label>Made</label>
+                <input type="radio" name="outcome" value="missed" checked={this.state.outcomeToggle === 'missed'}
+                    onChange={this.handleInputChange1}></input>
+                <label>Missed</label>
+              </div>
             </div>
-            <div>
-              <div>Team2</div>
-                {this.state.team2.map(player => (
-                  <div key={player.id}>
-                    <input  type="radio" name="player" value={player.id} onChange={this.handleInputChange2}></input>
-                    <label htmlFor="id">{player.name}</label>
-                  </div>
-                ))}
-            </div>
-            <div className="outcome-toggle">
-              <div>Outcome:</div>
-              <input  type="radio" name="outcome" value="made" checked={this.state.outcomeToggle === 'made'}
-                  onChange={this.handleInputChange1}></input>
-              <label>Made</label>
-              <input type="radio" name="outcome" value="missed" checked={this.state.outcomeToggle === 'missed'}
-                  onChange={this.handleInputChange1}></input>
-              <label>Missed</label>
+            <div className="court-container">
+              <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
             </div>
           </div>
-          <div className="court-container">
-            <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
-          </div>
+            <div className="last">
+              <div>Last Added</div>
+              <div>Shooter: {this.state.lastShot.shooter}</div>
+              <div>X Position: {this.state.lastShot.x} </div>
+              <div>Y Postion: {this.state.lastShot.y}</div>
+            </div>
         </div>
-          <div className="last">
-            <div>Last Added</div>
-            <div>Shooter: {this.state.lastShot.shooter}</div>
-            <div>X Position: {this.state.lastShot.x} </div>
-            <div>Y Postion: {this.state.lastShot.y}</div>
-          </div>
       </div>
       
     );

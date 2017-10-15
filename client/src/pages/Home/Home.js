@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import API from "../../utils/API";
 import Input from "../../components/Input";
+import "./reset.css";
 import "./main.css";
+
 
 class Home extends Component {
   state = {
