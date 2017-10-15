@@ -97,7 +97,7 @@ class Home extends Component {
             {/* Conditionally render different form if creating new League */}
             {this.state.showLoginForm &&
               <div className="login-container">
-                <div className="input-container">
+                <div className="mb-25">
                   <Input
                     name="leagueLogin"
                     value={this.state.leagueLogin}
@@ -105,7 +105,7 @@ class Home extends Component {
                     placeholder="League ID"
                   />
                 </div>
-                <div className="input-container">
+                <div className="mb-25">
                   <Input
                     name="password"
                     value={this.state.password}
@@ -123,7 +123,7 @@ class Home extends Component {
             {/* Conditionally render different form if creating new League */}
             {this.state.showNewForm &&
               <div className="login-container">
-                <div className="input-container">
+                <div className="mb-25">
                   <Input
                     name="leagueLogin"
                     value={this.state.leagueLogin}
@@ -131,7 +131,7 @@ class Home extends Component {
                     placeholder="League ID"
                   />
                 </div>
-                <div className="input-container">
+                <div className="mb-25">
                   <Input
                     name="password"
                     value={this.state.password}
@@ -139,7 +139,7 @@ class Home extends Component {
                     placeholder="Password"
                   />
                 </div>
-                <div className="input-container">
+                <div className="mb-25">
                   <Input
                     name="passwordConfirm"
                     value={this.state.passwordConfirm}
