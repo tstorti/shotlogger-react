@@ -160,8 +160,8 @@ class Dashboard extends Component {
     let array = [];
     for(let i=0; i<data.length;i++){
       let newShot={};
-      newShot.x = data[i].x * (50/600); 
-      newShot.y = (400 - data[i].y) * (35/400); 
+      newShot.x = data[i].x; 
+      newShot.y = data[i].y; 
       newShot.z = data[i].z;
       newShot.shooter = data[i].shooter;
       newShot.made = data[i].made;
@@ -218,13 +218,13 @@ class Dashboard extends Component {
         {/* Header */}
         <div className="header-main">
           <div className="d-f">
-            <div className="ml-20 d-f">
+            <div className="ml-10 d-f">
               <div><img className="logo-header" src={logo} alt="logo"></img></div>
-              <div className="ml-20">Shotlogger</div>
             </div>
-            <div className="a-r">
+            <div className="a-r ml-20">
               <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
               <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
+              <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
             </div>
           </div>  
         </div>

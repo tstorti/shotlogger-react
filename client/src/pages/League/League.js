@@ -116,6 +116,7 @@ class League extends Component {
               allPlayers:array,
               availablePlayers:array2,
             });
+            console.log(this.state.allPlayers);
           
           })
           .catch(err => console.log(err));
@@ -234,22 +235,24 @@ class League extends Component {
 
     return (
       <div>
+        {this.state.showNewPlayerForm &&
+          <div className="overlay"></div>
+        }  
         <div className="header-main">
-          <div className="d-f">
-            <div className="ml-20 d-f">
-              <div><img className="logo-header" src={logo} alt="logo"></img></div>
-              <div className="ml-20">League Home</div>
-            </div>
-            <div className="a-r">
-              <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
-              <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
-            </div>
-          </div>  
-        </div>
+        <div className="d-f">
+          <div className="ml-10 d-f">
+            <div><img className="logo-header" src={logo} alt="logo"></img></div>
+          </div>
+          <div className="ml-20">
+            <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
+            <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
+          </div>
+        </div>  
+      </div>
         {/* Content */}
         <div className="page-content">
           {!this.state.setupGame &&
-          <div>
+          <div className="p-r">
             {/* Player Pool */}
             <div className="player-pool-container">
               <div className="ta-c">
@@ -273,28 +276,35 @@ class League extends Component {
             
             {/* Player Creation */}
             <div>
-              <div className="modalOuter">
-                {this.state.showNewPlayerForm &&
-                  <div className="newPlayerModal"> 
-                    <div className="modalContent">
+              {this.state.showNewPlayerForm &&
+                <div className="newPlayerModal"> 
+                  <div className="modalContent">
+                    <div className="mb-25 russo">New Player Details:</div>
+                    <div className="mb-25">
                       <Input
                         name="newName"
                         value={this.state.newName}
                         onChange={this.handleInputChange}
                         placeholder="Name"
                       />
+                    </div>
+                    <div className="mb-25">
                       <Input
                         name="newPosition"
                         value={this.state.newPosition}
                         onChange={this.handleInputChange}
                         placeholder="Position"
                       />
+                    </div>
+                    <div className="mb-25">
                       <Input
                         name="newHeight"
                         value={this.state.newHeight}
                         onChange={this.handleInputChange}
                         placeholder="Height"
                       />
+                    </div>
+                    <div className="mb-25">
                       <Input
                         name="newImage"
                         value={this.state.newImage}
@@ -302,16 +312,17 @@ class League extends Component {
                         placeholder="Image Link"
                       />
                     </div>
-                    <div>
-                      <div className="warningMsg" >{this.state.warningCreation}</div>
-                    </div>
-                    <div>
-                      <button onClick={this.saveNewPlayer}>Save New Player</button>
-                      <button onClick={() => this.newPlayerDialog()}>Close</button>
-                    </div>
                   </div>
-                } 
-              </div>
+                  <div>
+                    <div className="warningMsg" >{this.state.warningCreation}</div>
+                  </div>
+                  <div className="mt-20">
+                    <button className="btn-new" onClick={this.saveNewPlayer}>Save New Player</button>
+                    <button className="btn-new" onClick={() => this.newPlayerDialog()}>Close</button>
+                  </div>
+                </div>
+              } 
+              
             </div>
           </div>
           }
@@ -319,8 +330,8 @@ class League extends Component {
           {this.state.setupGame &&
           <div>
             {/* Game Settings Container */}
-            <div className="d-f">
-              <div className="ml-20">
+            <div className="">
+              <div className="d-ib ml-20 mb-10 mt-10">
                 <Input
                   name="gameName"
                   value={this.state.gameName}
@@ -330,8 +341,7 @@ class League extends Component {
               </div>
               <button className="btn-new" onClick={() => this.redirect("shotlogger")}>Go to Shotlogger</button>
               <button className="btn-new" onClick={() => this.cancelShotlogSession()}>Cancel New Game</button>
-              <div className="ml-20 mt-10 warningMsg">{this.state.warningShotlog}</div>
-              <div className="d-f a-r">
+              <div className="d-ib a-r">
                 <div className="ml-20 mr-20">
                   <div className="mb-5">Current Season</div>
                   <div>
@@ -344,7 +354,7 @@ class League extends Component {
                   </div>
                 </div>
               </div>
-
+              <div className="ml-20 mt-10 warningMsg">{this.state.warningShotlog}</div>
             </div>
 
             {/* Team Toggle Container */}

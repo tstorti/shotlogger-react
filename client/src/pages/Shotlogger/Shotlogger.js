@@ -59,6 +59,14 @@ class Shotlogger extends Component {
       team1BtnClasses: team1BtnClasses,
       team2BtnClasses:team2BtnClasses,
     });
+
+    var canvas = document.querySelector('canvas');
+    // Make it visually fill the positioned parent
+    canvas.style.width ='100%';
+    canvas.style.height='100%';
+    // ...then set the internal size to match
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
   };
 
   //change current state for outcome and also classNames on make/miss button toggles
@@ -117,15 +125,18 @@ class Shotlogger extends Component {
 
   //draw new point on the court with color based on make/miss
   drawCoordinates = (x,y) => {
+    var canvas = document.querySelector('canvas');
     var pointSize = 8; // Change according to the size of the point.
     var ctx = document.getElementById("canvas").getContext("2d");
 
-    
+    let translatedX = x * (50/canvas.width);
+    let translatedY = (canvas.height - y) *(35/canvas.height);
+  
 
     if(this.state.outcomeToggle ==="missed"){
-      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:0, shooterName:this.state.shooterName, outcome:"Missed"}}, () =>{
+      this.setState({lastShot: {x: translatedX, y: translatedY, shooter:this.state.shooter, made:0, shooterName:this.state.shooterName, outcome:"Missed"}}, () =>{
         //save shot to the database
-        console.log(this.state.lastShot);
+        //console.log(this.state.lastShot);
         this.saveShot();
       });
       
@@ -133,9 +144,9 @@ class Shotlogger extends Component {
   
     }
     else{
-      this.setState({lastShot: {x: x, y: y, shooter:this.state.shooter, made:1, shooterName:this.state.shooterName, outcome:"Made"}}, () =>{
+      this.setState({lastShot: {x: translatedX, y: translatedY, shooter:this.state.shooter, made:1, shooterName:this.state.shooterName, outcome:"Made"}}, () =>{
         //save shot to the database
-        console.log(this.state.lastShot);
+        //console.log(this.state.lastShot);
         this.saveShot();
       });
 
@@ -205,11 +216,10 @@ class Shotlogger extends Component {
         {/* Header */}
         <div className="header-main">
           <div className="d-f">
-            <div className="ml-20 d-f">
+            <div className="ml-10 d-f">
               <div><img className="logo-header" src={logo} alt="logo"></img></div>
-              <div className="ml-20">Shotlogger</div>
             </div>
-            <div className="a-r">
+            <div className="a-r ml-20">
               <button className="btn-nav" onClick={() => this.redirect("logout")}>Logout</button>
               <button className="btn-nav" onClick={() => this.redirect("league")}>League Home</button>
               <button className="btn-nav" onClick={() => this.redirect("dashboard")}>Dashboard</button>
@@ -218,7 +228,10 @@ class Shotlogger extends Component {
         </div>
         {/* Page Content */}
         <div className="page-content">
-          <div className="d-f">
+          <div className="court-container">
+            <canvas onClick={this.getPosition} className="court" id="canvas"/>
+          </div>
+          <div className="">
             <div>
               {/* Team1 Toggles */}
               <div>
@@ -227,7 +240,7 @@ class Shotlogger extends Component {
               <div> 
                 <div className="mb-5">Team1</div>
                   {this.state.team1.map((player, index) => (
-                    <div key={player.id}>
+                    <div className="d-ib" key={player.id}>
                       <button className={this.state.team1BtnClasses[index]} onClick={() => this.changeShooter(player.id, index, "team1", player.name)}>{player.name}</button>
                     </div>
                   ))}
@@ -236,9 +249,9 @@ class Shotlogger extends Component {
               <div>
                 <div className="mb-5">Team 2</div>
                   {this.state.team2.map((player,index) => (
-                    <div key={player.id}>
-                    <button className={this.state.team2BtnClasses[index]} onClick={() => this.changeShooter(player.id, index, "team2", player.name)}>{player.name}</button>
-                  </div>
+                    <div className="d-ib" key={player.id}>
+                      <button className={this.state.team2BtnClasses[index]} onClick={() => this.changeShooter(player.id, index, "team2", player.name)}>{player.name}</button>
+                    </div>
                   ))}
               </div>
               {/* Outcome Toggle */}
@@ -253,9 +266,7 @@ class Shotlogger extends Component {
               </div>
             </div>
             {/* Court */}
-            <div className="court-container">
-              <canvas onClick={this.getPosition} className="court" id="canvas" width="624" height="400"/>
-            </div>
+            
           </div>
             <div>
               <div className="header-shotlogger mb-5">Last Shot</div>
