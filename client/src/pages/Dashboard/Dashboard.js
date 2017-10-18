@@ -271,13 +271,13 @@ class Dashboard extends Component {
               </select>
             </div>
           </div>
-          <div>
-            <div>
+          <div className="d-f">
+            <div className="comparison-container">
               <div className="mt-20 mb-20 section-break"></div>
               <div className="ml-20 russo">Stats for: {this.state.selectedPlayerName}</div>
-              <div className="d-f">
-                <div className="court-dashboard" id="chart1"></div>
-                <div className="a-r mr-20">
+              <div className="">
+                <div className="court-dashboard d-ib" id="chart1"></div>
+                <div className="ml-50">
                   <table>
                     <tbody>
                       <tr>
@@ -307,12 +307,12 @@ class Dashboard extends Component {
             </div>
             {/* Show Comparison if one selected */}
             {this.state.showComparison &&  
-            <div>
+            <div className="comparison-container">
               <div className="mt-20 mb-20 section-break"></div>
               <div className="ml-20 russo">Stats for: {this.state.comparisonPlayerName}</div>
-              <div className="d-f">
-                <div className="court-dashboard" id="chart2"></div>
-                <div className="a-r mr-20">
+              <div className="">
+                <div className="court-dashboard d-ib" id="chart2"></div>
+                <div className="ml-50">
                   <table>
                     <tbody>
                       <tr>
