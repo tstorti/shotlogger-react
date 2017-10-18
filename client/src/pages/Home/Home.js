@@ -29,8 +29,6 @@ class Home extends Component {
     });
   };
   leagueLogin = () => {
-    console.log(this.state.leagueLogin);
-    console.log(this.state.password);
     
     API.getLeague(this.state.leagueLogin)
         .then(res => {
@@ -42,7 +40,7 @@ class Home extends Component {
               players:res.data[0].players,
               leagueID:res.data[0]._id,
             });
-            console.log(res);
+        
           }
           else{
             this.setState({ errorMessage: "Invalid credentials, please try again" });
@@ -59,9 +57,7 @@ class Home extends Component {
   };
 
   leagueNewSubmit = () => {
-    console.log(this.state.leagueLogin);
-    console.log(this.state.password);
-    console.log(this.state.passwordConfirm);
+
     if(this.state.password === this.state.passwordConfirm){
       API.saveLeague(
         {

@@ -25,14 +25,29 @@ class Dashboard extends Component {
     shootingPercentage:"",
     totalShots:"",
     madeShots:"",
+    totalThrees:"",
+    madeThrees:"",
+    shootingPercentageThrees:"",
+    trueShootingPercentage:"",
+    
 
     comparisonShootingPercentage:"",
     comparisonTotalShots:"",
     comparisonMadeShots:"",
+    comparisonTotalThrees:"",
+    comparisonMadeThrees:"",
+    comparisonShootingPercentageThrees:"",
+    comparisonTrueShootingPercentage:"",
+    
 
     leagueShootingPercentage:"",
     leagueAverageTotalShots:"",
     leagueAverageMadeShots:"",
+    leagueAverageTotalThrees:"",
+    leagueAverageMadeThrees:"",
+    leagueShootingPercentageThrees:"",
+    leagueTrueShootingPercentage:"",
+
 
     redirectHome: false,
     redirectLeague:false,
@@ -142,9 +157,36 @@ class Dashboard extends Component {
     if(target==="comparison"){
       let totalShots = 0;
       let madeShots = 0;
+      let totalThrees = 0;
+      let madeThrees = 0;
+    
+
+      
       for(let i=0;i<data.length;i++){
+        
+        //calculate if a three pointer
+        let isThree = false;
+        let x = data[i].x;
+        let y = data[i].y;
+    
+        //corner threes
+        if((x<5.4 && y<14) || (x>44.5 && y<14)){
+          isThree = true;
+        }
+        //based on radius of court three pointer and center of court (formula for a circle solved & rounded)
+        if((y*y +x*x -50*x +625) > 552.25){
+          isThree = true;
+        }
+        
         if(data[i].made===1){
           madeShots++;
+          if(isThree){
+            madeThrees++
+          }
+        }
+        //console.log(x +", "+y+ " is 3pt? "+ isThree);
+        if(isThree){
+          totalThrees++;
         }
         totalShots++;
       }
@@ -152,14 +194,42 @@ class Dashboard extends Component {
         comparisonShootingPercentage:100*(madeShots/totalShots),
         comparisonTotalShots:totalShots,
         comparisonMadeShots:madeShots,
+        comparisonTotalThrees:totalThrees,
+        comparisonMadeThrees:madeThrees,
+        comparisonShootingPercentageThrees:100*(madeThrees/totalThrees),
+        //assume no free throws
+        comparisonTrueShootingPercentage:100*((3*madeThrees)+2*(madeShots-madeThrees))/(2*totalShots),
       })
     }
     else{
       let totalShots = 0;
       let madeShots = 0;
+      let totalThrees = 0;
+      let madeThrees = 0;
+
       for(let i=0;i<data.length;i++){
+        //calculate if a three pointer
+        let isThree = false;
+        let x = data[i].x;
+        let y = data[i].y;
+    
+        //corner threes
+        if((x<5.4 && y<14) || (x>44.5 && y<14)){
+          isThree = true;
+        }
+        //based on radius of court three pointer and center of court (formula for a circle solved & rounded)
+        if((y*y +x*x -50*x +625) > 552.25){
+          isThree = true;
+        }
+        
         if(data[i].made===1){
           madeShots++;
+          if(isThree){
+            madeThrees++;
+          }
+        }
+        if(isThree){
+          totalThrees++;
         }
         totalShots++;
       }
@@ -167,6 +237,10 @@ class Dashboard extends Component {
         shootingPercentage:100*(madeShots/totalShots),
         totalShots:totalShots,
         madeShots:madeShots,
+        totalThrees:totalThrees,
+        madeThrees:madeThrees,
+        shootingPercentageThrees:100*(madeThrees/totalThrees),
+        trueShootingPercentage:100*((3*madeThrees)+2*(madeShots-madeThrees))/(2*totalShots),
       })
     }
     
@@ -175,11 +249,34 @@ class Dashboard extends Component {
   calcLeagueSummaryStats = (data) => {
     let totalShots = 0;
     let madeShots = 0;
+    let totalThrees = 0;
+    let madeThrees = 0;
+
     for(let i=0;i<data.length;i++){
-      if(data[i].made===1){
-        madeShots++;
-      }
-      totalShots++;
+      //calculate if a three pointer
+        let isThree = false;
+        let x = data[i].x;
+        let y = data[i].y;
+    
+        //corner threes
+        if((x<5.4 && y<14) || (x>44.5 && y<14)){
+          isThree = true;
+        }
+        //based on radius of court three pointer and center of court (formula for a circle solved & rounded)
+        if((y*y +x*x -50*x +625) > 552.25){
+          isThree = true;
+        }
+        
+        if(data[i].made===1){
+          madeShots++;
+          if(isThree){
+            madeThrees++;
+          }
+        }
+        if(isThree){
+          totalThrees++;
+        }
+        totalShots++;
     }
     let averageShots = totalShots/this.state.allPlayers.length;
     let averageMadeShots = madeShots/this.state.allPlayers.length
@@ -187,6 +284,10 @@ class Dashboard extends Component {
       leagueShootingPercentage:100*(madeShots/totalShots),
       leagueAverageTotalShots:averageShots,
       leagueAverageMadeShots:averageMadeShots,
+      leagueAverageTotalThrees:totalThrees/this.state.allPlayers.length,
+      leagueAverageMadeThrees:madeThrees/this.state.allPlayers.length,
+      leagueShootingPercentageThrees:100*(madeThrees/totalThrees),
+      leagueTrueShootingPercentage:100*(((3*madeThrees)+2*(madeShots-madeThrees))/(2*totalShots)),
     })
   };
 
@@ -316,6 +417,26 @@ class Dashboard extends Component {
                         <td>{Math.round(this.state.shootingPercentage)}%</td>
                         <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
                       </tr>
+                      <tr>
+                        <th>Made 3pt Shots</th>
+                        <td>{this.state.madeThrees}</td>
+                        <td>{Math.round(this.state.leagueAverageMadeThrees)}</td>
+                      </tr>
+                      <tr>
+                        <th>Attempted 3pt Shots</th>
+                        <td>{this.state.totalThrees}</td>
+                        <td>{Math.round(this.state.leagueAverageTotalThrees)}</td>
+                      </tr>
+                      <tr>
+                        <th>Shooting % 3pt Shots</th>
+                        <td>{Math.round(this.state.shootingPercentageThrees)}%</td>
+                        <td>{Math.round(this.state.leagueShootingPercentageThrees)}%</td>
+                      </tr>
+                      <tr>
+                        <th>True Shooting %</th>
+                        <td>{Math.round(this.state.trueShootingPercentage)}%</td>
+                        <td>{Math.round(this.state.leagueTrueShootingPercentage)}%</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -350,6 +471,26 @@ class Dashboard extends Component {
                         <th>Shooting %</th>
                         <td>{Math.round(this.state.comparisonShootingPercentage)}%</td>
                         <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
+                      </tr>
+                      <tr>
+                        <th>Made 3pt Shots</th>
+                        <td>{this.state.comparisonMadeThrees}</td>
+                        <td>{Math.round(this.state.leagueAverageMadeThrees)}</td>
+                      </tr>
+                      <tr>
+                        <th>Attempted 3pt Shots</th>
+                        <td>{this.state.comparisonTotalThrees}</td>
+                        <td>{Math.round(this.state.leagueAverageTotalThrees)}</td>
+                      </tr>
+                      <tr>
+                        <th>Shooting % 3pt Shots</th>
+                        <td>{Math.round(this.state.comparisonShootingPercentageThrees)}%</td>
+                        <td>{Math.round(this.state.leagueShootingPercentageThrees)}%</td>
+                      </tr>
+                      <tr>
+                        <th>True Shooting %</th>
+                        <td>{Math.round(this.state.comparisonTrueShootingPercentage)}%</td>
+                        <td>{Math.round(this.state.leagueTrueShootingPercentage)}%</td>
                       </tr>
                     </tbody>
                   </table>
