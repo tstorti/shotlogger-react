@@ -109,7 +109,7 @@ body{
     margin-bottom:10px;
 }
 .btn-new:hover{
-    background-color:#4C6189;
+    background-color:#3C60A1;
 }
 
 .btn-active{
@@ -137,6 +137,35 @@ body{
     margin-bottom:10px;
 }
 .btn-inactive:hover{
+    background-color:#CEAA68;
+    opacity:.8;
+}
+
+.btn-active-shotlogger{
+    background-color: #CEAA68;
+    font-size:14px;
+    color: #10151F;
+    padding:10px;
+    border-color:#10151F;
+    border-radius:5px;
+    margin-left: 25px;
+    margin-bottom:10px;
+    width:125px;
+}
+
+.btn-inactive-shotlogger{
+    width:125px;
+    opacity:.5;
+    background-color: #D5D8DC;
+    font-size:14px;
+    color: #4C6189;
+    padding:10px;
+    border-color:#ABB5C6;
+    border-radius:5px;
+    margin-left: 25px;
+    margin-bottom:10px;
+}
+.btn-inactive-shotlogger:hover{
     background-color:#CEAA68;
     opacity:.8;
 }
@@ -173,6 +202,9 @@ body{
 .page-content{
     padding-top:120px;
 }
+.page-content-dashboard{
+    padding-top:120px;
+}
 .login-container{
     text-align:center;
     margin-bottom:25px;
@@ -197,7 +229,9 @@ body{
 .court-container{
     width:100%;
     position:relative;
-
+    max-width:700px;
+    margin-right:auto;
+    margin-left:auto;
 }
 
 .court{
@@ -212,8 +246,6 @@ body{
     left:0;
     bottom:0;
     right:0;
-
-
 }
 .court-container:before{
     content:"";
@@ -282,7 +314,7 @@ tr{
 }
 .section-break{
     width:100%;
-    border-bottom:1px solid #10151F;
+    border-bottom:2px solid #10151F;
 }
 
 
@@ -317,3 +349,145 @@ tr{
 .shot-chart-title{font-size:15%;text-transform:uppercase}
 .legend text{font-size:4%}
 
+@media (max-width: 768px) {
+
+    .btn-active-shotlogger{
+        background-color: #CEAA68;
+        font-size:12px;
+        color: #10151F;
+        padding:5px;
+        border-color:#10151F;
+        border-radius:5px;
+        margin-left: 10px;
+        margin-bottom:5px;
+        width:75px;
+    }
+
+    .btn-inactive-shotlogger{
+        width:75px;
+        opacity:.5;
+        background-color: #D5D8DC;
+        font-size:12px;
+        color: #4C6189;
+        padding:5px;
+        border-color:#ABB5C6;
+        border-radius:5px;
+        margin-left: 10px;
+        margin-bottom:5px;
+    }
+    .btn-inactive-shotlogger:hover{
+        background-color:#CEAA68;
+        opacity:.8;
+    }
+
+    .btn-nav{
+        background-color: #324977;
+        font-size:12px;
+        color: #CEAB68;
+        padding:5px;
+        border-color:#10151F;
+        border-radius:5px;
+        margin-right: 5px;
+        margin-top:15px;
+    }
+
+    .btn-new{
+        background-color: #324977;
+        font-size:12px;
+        color: #CEAB68;
+        padding:5px;
+        border-color:#10151F;
+        border-radius:5px;
+        margin-right: 5px;
+        margin-top:5px;
+    }
+
+    .logo{
+        width:100px;
+    }
+    .logo-header{
+        width:40px;
+    }
+
+    .page-content{
+        padding-top:60px;
+    }
+
+    .header-shotlogger-sub{
+        font-size:12px;
+    }
+
+    .header-shotlogger{
+        font-size:12px;
+    }
+
+    .btn-active{
+        background-color: #CEAA68;
+        font-size:12px;
+        color: #10151F;
+        padding:10px;
+        border-color:#10151F;
+        border-radius:5px;
+        margin-left: 10px;
+        margin-bottom:5px;
+        width:100px;
+    }
+
+    .btn-inactive{
+        width:100px;
+        opacity:.5;
+        background-color: #D5D8DC;
+        font-size:12px;
+        color: #4C6189;
+        padding:10px;
+        border-color:#ABB5C6;
+        border-radius:5px;
+        margin-left: 10px;
+        margin-bottom:5px;
+    }
+    .btn-inactive:hover{
+        background-color:#CEAA68;
+        opacity:.8;
+    }
+
+    .player-pool-container{
+        margin:4%;
+        border:1px solid #10151F;
+        border-radius: 10px;
+        padding: 20px;
+        width:80%;
+    }
+
+    .overlay{
+        top:0px;
+        position:absolute;
+        width: 100%;
+        height:1000px;
+        background-color:black;
+        opacity:.6;
+        z-index:2;
+    }
+    .newPlayerModal{
+        position:absolute;
+        top:10%;
+        padding:40px;
+        background-color:white;
+        border: 1px solid #10151F;
+        width:70%;
+        height: 300px;
+        z-index: 100;
+        margin-left:2%;
+       
+        border-radius:20px;
+    }
+
+    .header-player-pool{
+        font-size:14px;
+    }
+
+    .container-newgame{
+        margin-top:15px;
+    }
+
+
+}

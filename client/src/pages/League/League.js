@@ -41,7 +41,7 @@ class League extends Component {
   };
 
   componentDidMount(){
-    console.log(this.props.location.state);
+    //console.log(this.props.location.state);
     let players = this.props.location.state.allPlayers
     players = [...players];
 
@@ -116,7 +116,7 @@ class League extends Component {
               allPlayers:array,
               availablePlayers:array2,
             });
-            console.log(this.state.allPlayers);
+            //console.log(this.state.allPlayers);
           
           })
           .catch(err => console.log(err));
@@ -330,7 +330,7 @@ class League extends Component {
           {this.state.setupGame &&
           <div>
             {/* Game Settings Container */}
-            <div className="">
+            <div className="container-newgame">
               <div className="d-ib ml-20 mb-10 mt-10">
                 <Input
                   name="gameName"

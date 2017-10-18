@@ -23,8 +23,8 @@ class Shotlogger extends Component {
     shooterName:"",
     outcomeToggle:"made",
 
-    madeBtnClass:"btn-active",
-    missedBtnClass:"btn-inactive",
+    madeBtnClass:"btn-active-shotlogger",
+    missedBtnClass:"btn-inactive-shotlogger",
     team1BtnClasses: [],
     team2BtnClasses: [],
 
@@ -35,16 +35,16 @@ class Shotlogger extends Component {
 
   //set state with team selections and init all the button classes on the toggles
   componentDidMount(){
-    console.log(this.props.location.state);
+    //console.log(this.props.location.state);
     let team1 = this.props.location.state.team1;
     let team2 = this.props.location.state.team2;
-    let team1BtnClasses =["btn-active"];
+    let team1BtnClasses =["btn-active-shotlogger"];
     let team2BtnClasses =[];
     for(let i=1;i<team1.length;i++){
-      team1BtnClasses.push("btn-inactive");
+      team1BtnClasses.push("btn-inactive-shotlogger");
     }
     for(let i=0;i<team2.length;i++){
-      team2BtnClasses.push("btn-inactive");
+      team2BtnClasses.push("btn-inactive-shotlogger");
     }
     
     this.setState({
@@ -73,15 +73,15 @@ class Shotlogger extends Component {
   changeOutcome = (outcome) => {
     if(outcome ==="made"){
       this.setState({
-        madeBtnClass:"btn-active",
-        missedBtnClass:"btn-inactive",
+        madeBtnClass:"btn-active-shotlogger",
+        missedBtnClass:"btn-inactive-shotlogger",
         outcomeToggle:"made",
       })
     }
     else{
       this.setState({
-        madeBtnClass:"btn-inactive",
-        missedBtnClass:"btn-active",
+        madeBtnClass:"btn-inactive-shotlogger",
+        missedBtnClass:"btn-active-shotlogger",
         outcomeToggle:"missed",
       })
     }
@@ -92,16 +92,16 @@ class Shotlogger extends Component {
     let team1BtnClasses =[];
     let team2BtnClasses =[];
     for(let i=0;i<this.state.team1.length;i++){
-      team1BtnClasses.push("btn-inactive");
+      team1BtnClasses.push("btn-inactive-shotlogger");
     }
     for(let i=0;i<this.state.team2.length;i++){
-      team2BtnClasses.push("btn-inactive");
+      team2BtnClasses.push("btn-inactive-shotlogger");
     }
     if(team === "team1"){
-      team1BtnClasses.splice(index, 1, "btn-active");
+      team1BtnClasses.splice(index, 1, "btn-active-shotlogger");
     }
     else{
-      team2BtnClasses.splice(index, 1, "btn-active");
+      team2BtnClasses.splice(index, 1, "btn-active-shotlogger");
     }
     
     this.setState({
@@ -174,8 +174,8 @@ class Shotlogger extends Component {
         league:this.state.leagueID,
       })
         .then(res => {
-          //console.log
-          console.log(res);
+          
+          //console.log(res);
         })
         .catch(err => console.log(err));
   };
@@ -238,7 +238,7 @@ class Shotlogger extends Component {
               <div className="mb-10 header-shotlogger ">Shooter:</div>
               </div>
               <div> 
-                <div className="mb-5">Team1</div>
+                <div className="mb-5 header-shotlogger-sub">Team1</div>
                   {this.state.team1.map((player, index) => (
                     <div className="d-ib" key={player.id}>
                       <button className={this.state.team1BtnClasses[index]} onClick={() => this.changeShooter(player.id, index, "team1", player.name)}>{player.name}</button>
@@ -247,7 +247,7 @@ class Shotlogger extends Component {
               </div>
               {/* Team2 Toggles */}
               <div>
-                <div className="mb-5">Team 2</div>
+                <div className="mb-5 header-shotlogger-sub">Team 2</div>
                   {this.state.team2.map((player,index) => (
                     <div className="d-ib" key={player.id}>
                       <button className={this.state.team2BtnClasses[index]} onClick={() => this.changeShooter(player.id, index, "team2", player.name)}>{player.name}</button>
@@ -256,11 +256,9 @@ class Shotlogger extends Component {
               </div>
               {/* Outcome Toggle */}
               <div>
-                <div className="mb-10 header-shotlogger ">Outcome:</div>
+                <div className="mb-10 header-shotlogger">Outcome:</div>
                   <div>
                     <button className={this.state.madeBtnClass} onClick={() => this.changeOutcome("made")}>Make</button>
-                  </div>
-                  <div>
                     <button className={this.state.missedBtnClass} onClick={() => this.changeOutcome("miss")}>Miss</button>
                   </div>
               </div>
@@ -270,8 +268,8 @@ class Shotlogger extends Component {
           </div>
             <div>
               <div className="header-shotlogger mb-5">Last Shot</div>
-              <div className="mb-5">Shooter: {this.state.lastShot.shooterName}</div>
-              <div>Outcome: {this.state.lastShot.outcome} </div>
+              <div className="mb-5 header-shotlogger-sub">Shooter: {this.state.lastShot.shooterName}</div>
+              <div className="mb-5 header-shotlogger-sub">Outcome: {this.state.lastShot.outcome} </div>
             </div>
         </div>
       </div>

@@ -56,9 +56,6 @@ class Home extends Component {
   };
 
   leagueNewSubmit = () => {
-    console.log(this.state.leagueLogin);
-    console.log(this.state.password);
-    console.log(this.state.passwordConfirm);
     if(this.state.password === this.state.passwordConfirm){
       API.saveLeague(
         {
@@ -66,7 +63,7 @@ class Home extends Component {
           password:this.state.password,
         })
         .then(res => {
-          console.log(res);
+          //console.log(res);
           this.setState({ 
             redirect: true,
             leagueID:res.data._id,

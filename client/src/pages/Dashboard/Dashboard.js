@@ -18,7 +18,9 @@ class Dashboard extends Component {
     comparisonPlayerData:[],
 
     selectedPlayer:"",
+    selectedPlayerName:"",
     comparisonPlayer:"",
+    comparisonPlayerName:"",
     
     shootingPercentage:"",
     totalShots:"",
@@ -34,21 +36,30 @@ class Dashboard extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props.location.state);
+    //console.log(this.props.location.state);
     BasketballShotChart();
     
-    console.log(this.props.location.state.allPlayers[0]._id);
+    //console.log(this.props.location.state.allPlayers[0]._id);
     this.getPlayerShots(this.props.location.state.allPlayers[0]._id);
     this.getAllShots(this.props.location.state.leagueID);
     
     this.setState({
       allPlayers: this.props.location.state.allPlayers,
       selectedPlayer: this.props.location.state.allPlayers[0].name,
+      selectedPlayerName: this.props.location.state.allPlayers[0].name,
       leagueID:this.props.location.state.leagueID,
     });
   };
 
   handleInputChange = event =>{
+    //console.log(this.state.allPlayers);
+    for(let i=0;i<this.state.allPlayers.length;i++){
+      if(this.state.allPlayers[i]._id===event.target.value){
+        this.setState({
+          selectedPlayerName:this.state.allPlayers[i].name,
+        });
+      }
+    }
     this.setState({selectedPlayer: event.target.value}, () =>{
       this.getPlayerShots(this.state.selectedPlayer);
     });
@@ -58,6 +69,14 @@ class Dashboard extends Component {
       this.setState({showComparison:false});
     }
     else{
+      for(let i=0;i<this.state.allPlayers.length;i++){
+        if(this.state.allPlayers[i]._id===event.target.value){
+          this.setState({
+            comparisonPlayerName:this.state.allPlayers[i].name,
+          });
+        }
+      }
+      
       this.setState({comparisonPlayer: event.target.value}, () =>{
         this.getPlayerShots(this.state.comparisonPlayer, "comparison");
       });
@@ -69,7 +88,7 @@ class Dashboard extends Component {
     //should replace with leagueID
     API.getAllShots(id)
     .then(res => {
-        console.log(res);
+        //console.log(res);
         //this.translateData(res.data);
         this.calcLeagueSummaryStats(res.data);
     })
@@ -79,7 +98,7 @@ class Dashboard extends Component {
   getPlayerShots(id, target){
     API.getShots(id)
     .then(res => {
-        console.log(res);
+        //console.log(res);
         this.translateData(res.data, target);
         this.calcSummaryStats(res.data, target);
     })
@@ -91,8 +110,8 @@ class Dashboard extends Component {
     d3.selectAll("svg").remove();
     //draw new heatmap
     //var heatRange = ['#5458A2', '#6689BB', '#FADC97', '#F08460', '#B02B48'];	
-    console.log(this.state.playerData);
-    console.log(this.state.comparisonPlayerData);
+    //console.log(this.state.playerData);
+    //console.log(this.state.comparisonPlayerData);
     d3.select(document.getElementById("chart1"))
     .append("svg")
       .chart("BasketballShotChart", {
@@ -160,12 +179,12 @@ class Dashboard extends Component {
     let array = [];
     for(let i=0; i<data.length;i++){
       let newShot={};
-      newShot.x = data[i].x; 
-      newShot.y = data[i].y; 
+      newShot.x = Math.round(data[i].x); 
+      newShot.y = Math.round(data[i].y); 
       newShot.z = data[i].z;
       newShot.shooter = data[i].shooter;
       newShot.made = data[i].made;
-      newShot.attempts = data[i].attempts;
+      newShot.attempts = 1;
       array.push(newShot);
     }
     if(target ==="comparison"){
@@ -230,9 +249,9 @@ class Dashboard extends Component {
         </div>
 
         {/* Page Content */}
-        <div className="page-content">
+        <div className="page-content-dashboard">
           <div className="ml-20 d-ib">
-            <div className="mb-10">Stats for Player: </div>
+            <div className="mb-10 russo">Stats for Player: </div>
             <div>
               <select className="select-player" onChange={this.handleInputChange} value={this.state.selectedPlayer}>
                 {this.state.allPlayers.map(player => (
@@ -242,7 +261,7 @@ class Dashboard extends Component {
             </div>
           </div>
           <div className="ml-20 d-ib">
-            <div className="mb-10">Compare with Player: </div>
+            <div className="mb-10 russo">Compare with Player: </div>
             <div>
               <select className="select-player" onChange={this.handleInputChange2} value={this.state.comparisonPlayer}>
               <option  value="None">None</option>
@@ -252,40 +271,45 @@ class Dashboard extends Component {
               </select>
             </div>
           </div>
-          <div >
-            <div className="d-f">
-              <div className="court-dashboard" id="chart1"></div>
-              <div className="a-r mr-20">
-                <table>
-                  <tbody>
-                    <tr>
-                      <th></th>
-                      <th>Player Stats</th>
-                      <th>League Average</th>
-                    </tr>
-                    <tr>
-                      <th>Made</th>
-                      <td>{this.state.madeShots}</td>
-                      <td>{Math.round(this.state.leagueAverageMadeShots)}</td>
-                    </tr>
-                    <tr>
-                      <th>Attempted</th>
-                      <td>{this.state.totalShots}</td>
-                      <td>{Math.round(this.state.leagueAverageTotalShots)}</td>
-                    </tr>
-                    <tr>
-                      <th>Shooting %</th>
-                      <td>{Math.round(this.state.shootingPercentage)}%</td>
-                      <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
-                    </tr>
-                  </tbody>
-                </table>
+          <div>
+            <div>
+              <div className="mt-20 mb-20 section-break"></div>
+              <div className="ml-20 russo">Stats for: {this.state.selectedPlayerName}</div>
+              <div className="d-f">
+                <div className="court-dashboard" id="chart1"></div>
+                <div className="a-r mr-20">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <th></th>
+                        <th>Player Stats</th>
+                        <th>League Average</th>
+                      </tr>
+                      <tr>
+                        <th>Made</th>
+                        <td>{this.state.madeShots}</td>
+                        <td>{Math.round(this.state.leagueAverageMadeShots)}</td>
+                      </tr>
+                      <tr>
+                        <th>Attempted</th>
+                        <td>{this.state.totalShots}</td>
+                        <td>{Math.round(this.state.leagueAverageTotalShots)}</td>
+                      </tr>
+                      <tr>
+                        <th>Shooting %</th>
+                        <td>{Math.round(this.state.shootingPercentage)}%</td>
+                        <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
             {/* Show Comparison if one selected */}
             {this.state.showComparison &&  
             <div>
               <div className="mt-20 mb-20 section-break"></div>
+              <div className="ml-20 russo">Stats for: {this.state.comparisonPlayerName}</div>
               <div className="d-f">
                 <div className="court-dashboard" id="chart2"></div>
                 <div className="a-r mr-20">
