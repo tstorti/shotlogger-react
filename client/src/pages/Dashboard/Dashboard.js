@@ -26,6 +26,10 @@ class Dashboard extends Component {
     totalShots:"",
     madeShots:"",
 
+    comparisonShootingPercentage:"",
+    comparisonTotalShots:"",
+    comparisonMadeShots:"",
+
     leagueShootingPercentage:"",
     leagueAverageTotalShots:"",
     leagueAverageMadeShots:"",
@@ -135,8 +139,20 @@ class Dashboard extends Component {
   };
 
   calcSummaryStats = (data, target) => {
-    if(target==="comparision"){
-
+    if(target==="comparison"){
+      let totalShots = 0;
+      let madeShots = 0;
+      for(let i=0;i<data.length;i++){
+        if(data[i].made===1){
+          madeShots++;
+        }
+        totalShots++;
+      }
+      this.setState({
+        comparisonShootingPercentage:100*(madeShots/totalShots),
+        comparisonTotalShots:totalShots,
+        comparisonMadeShots:madeShots,
+      })
     }
     else{
       let totalShots = 0;
@@ -322,17 +338,17 @@ class Dashboard extends Component {
                       </tr>
                       <tr>
                         <th>Made</th>
-                        <td>{this.state.madeShots}</td>
+                        <td>{this.state.comparisonMadeShots}</td>
                         <td>{Math.round(this.state.leagueAverageMadeShots)}</td>
                       </tr>
                       <tr>
                         <th>Attempted</th>
-                        <td>{this.state.totalShots}</td>
+                        <td>{this.state.comparisonTotalShots}</td>
                         <td>{Math.round(this.state.leagueAverageTotalShots)}</td>
                       </tr>
                       <tr>
                         <th>Shooting %</th>
-                        <td>{Math.round(this.state.shootingPercentage)}%</td>
+                        <td>{Math.round(this.state.comparisonShootingPercentage)}%</td>
                         <td>{Math.round(this.state.leagueShootingPercentage)}%</td>
                       </tr>
                     </tbody>
