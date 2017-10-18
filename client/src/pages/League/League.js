@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import API from "../../utils/API";
 import PlayerCard from "../../components/PlayerCard";
-import Input from "../../components/Input";
+import {Input} from "../../components/Input";
 import logo from './logo.png';
 
 //placeholder data

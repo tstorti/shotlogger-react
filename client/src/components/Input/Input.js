@@ -1,9 +1,9 @@
 import React from "react";
 
-const Input = props => (
+export const Input = props => 
   <div>
     <input className="input" type="text" {...props} />
-  </div>
-);
+  </div>;
 
-export default Input;
+
+

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router';
 import API from "../../utils/API";
-import Input from "../../components/Input";
+import {Input, InputPass} from "../../components/Input";
+
 import "./reset.css";
 import "./main.css";
 
@@ -28,6 +29,8 @@ class Home extends Component {
     });
   };
   leagueLogin = () => {
+    console.log(this.state.leagueLogin);
+    console.log(this.state.password);
     
     API.getLeague(this.state.leagueLogin)
         .then(res => {
@@ -39,7 +42,7 @@ class Home extends Component {
               players:res.data[0].players,
               leagueID:res.data[0]._id,
             });
-            //console.log(res);
+            console.log(res);
           }
           else{
             this.setState({ errorMessage: "Invalid credentials, please try again" });
@@ -56,6 +59,9 @@ class Home extends Component {
   };
 
   leagueNewSubmit = () => {
+    console.log(this.state.leagueLogin);
+    console.log(this.state.password);
+    console.log(this.state.passwordConfirm);
     if(this.state.password === this.state.passwordConfirm){
       API.saveLeague(
         {
@@ -108,7 +114,7 @@ class Home extends Component {
                   />
                 </div>
                 <div className="mb-25">
-                  <Input
+                  <InputPass
                     name="password"
                     value={this.state.password}
                     onChange={this.handleInputChange}
@@ -134,7 +140,7 @@ class Home extends Component {
                   />
                 </div>
                 <div className="mb-25">
-                  <Input
+                  <InputPass
                     name="password"
                     value={this.state.password}
                     onChange={this.handleInputChange}
@@ -142,7 +148,7 @@ class Home extends Component {
                   />
                 </div>
                 <div className="mb-25">
-                  <Input
+                  <InputPass
                     name="passwordConfirm"
                     value={this.state.passwordConfirm}
                     onChange={this.handleInputChange}

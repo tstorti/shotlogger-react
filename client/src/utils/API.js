@@ -15,7 +15,7 @@ export default {
   },
   //Save new Shot
   saveShot: function(id,shotData) {
-    console.log(shotData);
+    //console.log(shotData);
     return axios.post("/api/players/"+id, shotData);
   },
 
@@ -26,7 +26,7 @@ export default {
 
   // Gets all shots for league
   getAllShots: function(id) { 
-    console.log("getting league shots");
+    //console.log("getting league shots");
     return axios.get("/api/shotlogs/"+id);
   },
 
