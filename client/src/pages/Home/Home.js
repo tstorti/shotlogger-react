@@ -42,6 +42,7 @@ class Home extends Component {
             });
         
           }
+          //TODO - need to fix the error message when no result
           else{
             this.setState({ errorMessage: "Invalid credentials, please try again" });
           }

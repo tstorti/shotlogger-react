@@ -132,7 +132,6 @@ class Shotlogger extends Component {
     let translatedX = x * (50/canvas.width);
     let translatedY = (canvas.height - y) *(35/canvas.height);
   
-    console.log(translatedX +", "+ translatedY);
 
     if(this.state.outcomeToggle ==="missed"){
       this.setState({lastShot: {x: translatedX, y: translatedY, shooter:this.state.shooter, made:0, shooterName:this.state.shooterName, outcome:"Missed"}}, () =>{
