@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -13,16 +14,9 @@ app.use(express.static("client/build"));
 // Add routes, both API and view
 app.use(routes);
 
-// Set up promises with mongoose
-mongoose.Promise = global.Promise;
+const uri = process.env.MONGODB_URI || "mongodb://localhost/shotlogger";
 // Connect to the Mongo DB
-mongoose.connect(
-  //process.env.MONGODB_URI || "mongodb://localhost/shotlogs",
-  process.env.MONGODB_URI || "mongodb://heroku_3lpjtkgb:n3unn68oqu8qdnovjhk7dhcbj6@ds057244.mlab.com:57244/heroku_3lpjtkgb",
-  {
-    useMongoClient: true
-  }
-);
+mongoose.connect(uri);
 
 // Start the API server
 app.listen(PORT, function() {
