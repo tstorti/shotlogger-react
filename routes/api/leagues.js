@@ -5,8 +5,8 @@ const leaguesController = require("../../controllers/leaguesController");
 router.route("/")
   .post(leaguesController.create);
   
-// Matches with "/api/leagues/:id"
-router.route("/:id")
-  .get(leaguesController.getLeague);
+// Matches with "/api/leagues/login"
+router.route("/authenticate")
+  .post(leaguesController.getLeague);
 
 module.exports = router;

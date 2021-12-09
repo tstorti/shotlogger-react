@@ -29,25 +29,23 @@ class Home extends Component {
     });
   };
   leagueLogin = () => {
-    
-    API.getLeague(this.state.leagueLogin)
-        .then(res => {
-          //if valid league login, set redirect to true so the redirect goes to the league page
-          if(res.data[0].login === this.state.leagueLogin && res.data[0].password === this.state.password){
-            this.setState({ 
-              redirect: true,
-              errorMessage: "",
-              players:res.data[0].players,
-              leagueID:res.data[0]._id,
-            });
-        
-          }
-          //TODO - need to fix the error message when no result
-          else{
-            this.setState({ errorMessage: "Invalid credentials, please try again" });
-          }
-        })
-        .catch(err => console.log(err));
+    API.getLeague({
+      login:this.state.leagueLogin,
+      password:this.state.password,
+    })
+      .then(res => {
+        //if valid league login, set redirect to true so the redirect goes to the league page
+        this.setState({ 
+          redirect: true,
+          errorMessage: "",
+          players:res.data.players,
+          leagueID:res.data._id,
+        });
+      })
+      .catch(err =>  {
+        this.setState({ errorMessage: "Invalid credentials, please try again" });
+        console.log(err)
+      });
   };
   leagueNew = () => {
     //set redirect to true so the redirect goes to the new league page

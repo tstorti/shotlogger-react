@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default {
   // Gets league data for login
-  getLeague: function(login) { 
-    return axios.get("/api/leagues/"+login);
+  getLeague: function(leagueData) { 
+    return axios.post("/api/leagues/authenticate", leagueData);
   },
   // Saves a league to the database
   saveLeague: function(leagueData) {
